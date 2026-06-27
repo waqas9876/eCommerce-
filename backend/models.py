@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timedelta
+import secrets
 from extensions import db, bcrypt
 
 
@@ -43,6 +44,29 @@ class User(db.Model):
             'is_active':  self.is_active,
             'created_at': self.created_at.isoformat(),
         }
+
+
+class PasswordResetToken(db.Model):
+    __tablename__ = 'password_reset_tokens'
+    id         = db.Column(db.Integer, primary_key=True)
+    user_id    = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    token      = db.Column(db.String(64), unique=True, nullable=False)
+    expires_at = db.Column(db.DateTime, nullable=False)
+    used       = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    @staticmethod
+    def generate(user_id):
+        # Invalidate old tokens for this user
+        PasswordResetToken.query.filter_by(user_id=user_id, used=False).update({'used': True})
+        t = PasswordResetToken(
+            user_id=user_id,
+            token=secrets.token_urlsafe(32),
+            expires_at=datetime.utcnow() + timedelta(hours=1)
+        )
+        db.session.add(t)
+        db.session.commit()
+        return t
 
 
 class Product(db.Model):
