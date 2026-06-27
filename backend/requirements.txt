@@ -7,3 +7,5 @@ python-dotenv==1.0.1
 SQLAlchemy==2.0.29
 PyMySQL==1.2.0
 cryptography==49.0.0
+gunicorn==21.2.0
+psycopg2-binary==2.9.9
