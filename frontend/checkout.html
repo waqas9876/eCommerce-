@@ -168,7 +168,7 @@
           <div class="p-4">
             <div class="d-flex gap-2 mb-4 flex-wrap">
               <button class="pay-tab active" data-tab="card" onclick="switchPayTab('card',this)" style="border:1.5px solid var(--primary);background:var(--primary-light);color:var(--primary);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fa-solid fa-credit-card me-2"></i>Credit/Debit Card</button>
-              <button class="pay-tab" data-tab="paypal" onclick="switchPayTab('paypal',this)" style="border:1.5px solid var(--border);background:white;color:var(--dark);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fab fa-paypal me-2 text-primary"></i>PayPal</button>
+              <button class="pay-tab" data-tab="easypaisa" onclick="switchPayTab('easypaisa',this)" style="border:1.5px solid var(--border);background:white;color:var(--dark);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fa-solid fa-mobile-screen me-2" style="color:#4CAF50"></i>EasyPaisa</button>
               <button class="pay-tab" data-tab="cod" onclick="switchPayTab('cod',this)" style="border:1.5px solid var(--border);background:white;color:var(--dark);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fa-solid fa-money-bill me-2 text-success"></i>Cash on Delivery</button>
             </div>
 
@@ -204,10 +204,34 @@
               </div>
             </div>
 
-            <div id="tab-paypal" class="d-none text-center py-4">
-              <div style="font-size:3rem;color:#003087"><i class="fab fa-paypal"></i></div>
-              <p class="text-muted mt-2">You'll be redirected to PayPal to complete your payment securely.</p>
-              <button class="btn btn-primary">Pay with PayPal</button>
+            <div id="tab-easypaisa" class="d-none">
+              <div class="p-4 rounded-3" style="background:#f0fdf4;border:1.5px solid #bbf7d0">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div style="width:52px;height:52px;border-radius:12px;background:#4CAF50;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <i class="fa-solid fa-mobile-screen" style="color:#fff;font-size:1.4rem"></i>
+                  </div>
+                  <div>
+                    <div class="fw-700" style="color:#15803d;font-size:1rem">EasyPaisa Mobile Payment</div>
+                    <div class="small text-muted">Enter your EasyPaisa mobile number to pay</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-500">EasyPaisa Mobile Number</label>
+                  <div class="input-group">
+                    <span class="input-group-text" style="background:#4CAF50;color:#fff;border-color:#4CAF50;font-weight:600">+92</span>
+                    <input type="text" class="form-control" id="ep-mobile" placeholder="3XX XXXXXXX" maxlength="10" style="border-color:#86efac">
+                  </div>
+                  <div class="small text-muted mt-1">A confirmation code will be sent to this number</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-500">EasyPaisa CNIC (last 6 digits)</label>
+                  <input type="text" class="form-control" id="ep-cnic" placeholder="e.g. 123456" maxlength="6" style="border-color:#86efac">
+                </div>
+                <div class="p-3 rounded-2 d-flex align-items-center gap-2" style="background:#dcfce7">
+                  <i class="fa-solid fa-shield-halved" style="color:#16a34a"></i>
+                  <span class="small" style="color:#15803d">Your payment is secured and encrypted by EasyPaisa</span>
+                </div>
+              </div>
             </div>
 
             <div id="tab-cod" class="d-none">
@@ -321,7 +345,7 @@
           <i class="fa-solid fa-shield-halved fa-lg" style="color:var(--success)"></i>
           <i class="fab fa-cc-visa fa-lg" style="color:#1a1f71"></i>
           <i class="fab fa-cc-mastercard fa-lg" style="color:#eb001b"></i>
-          <i class="fab fa-paypal fa-lg" style="color:#003087"></i>
+          <i class="fa-solid fa-mobile-screen fa-lg" style="color:#4CAF50"></i>
         </div>
         <div style="font-size:.75rem;color:var(--gray-400)">256-bit SSL encrypted &amp; secure payment</div>
       </div>
@@ -525,7 +549,7 @@ function switchPayTab(tab, btn) {
   btn.style.background = 'var(--primary-light)';
   btn.style.borderColor = 'var(--primary)';
   btn.style.color = 'var(--primary)';
-  ['card', 'paypal', 'cod'].forEach(function(t) {
+  ['card', 'easypaisa', 'cod'].forEach(function(t) {
     document.getElementById('tab-' + t).classList.add('d-none');
   });
   document.getElementById('tab-' + tab).classList.remove('d-none');
@@ -533,7 +557,7 @@ function switchPayTab(tab, btn) {
   // Update review payment method display
   var payEl = document.getElementById('review-payment-method');
   if (payEl) {
-    var icons = { card: '<i class="fab fa-cc-visa" style="color:#1a1f71;font-size:1.3rem"></i><div><div class="fw-500 text-dark">Credit / Debit Card</div></div>', paypal: '<i class="fab fa-paypal" style="color:#003087;font-size:1.3rem"></i><div><div class="fw-500 text-dark">PayPal</div></div>', cod: '<i class="fa-solid fa-money-bill" style="color:var(--success);font-size:1.3rem"></i><div><div class="fw-500 text-dark">Cash on Delivery</div></div>' };
+    var icons = { card: '<i class="fab fa-cc-visa" style="color:#1a1f71;font-size:1.3rem"></i><div><div class="fw-500 text-dark">Credit / Debit Card</div></div>', easypaisa: '<i class="fa-solid fa-mobile-screen" style="color:#4CAF50;font-size:1.3rem"></i><div><div class="fw-500 text-dark">EasyPaisa</div></div>', cod: '<i class="fa-solid fa-money-bill" style="color:var(--success);font-size:1.3rem"></i><div><div class="fw-500 text-dark">Cash on Delivery</div></div>' };
     payEl.innerHTML = icons[tab] || icons.card;
   }
 }
