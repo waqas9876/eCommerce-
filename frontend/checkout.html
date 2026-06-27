@@ -169,6 +169,7 @@
             <div class="d-flex gap-2 mb-4 flex-wrap">
               <button class="pay-tab active" data-tab="card" onclick="switchPayTab('card',this)" style="border:1.5px solid var(--primary);background:var(--primary-light);color:var(--primary);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fa-solid fa-credit-card me-2"></i>Credit/Debit Card</button>
               <button class="pay-tab" data-tab="easypaisa" onclick="switchPayTab('easypaisa',this)" style="border:1.5px solid var(--border);background:white;color:var(--dark);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fa-solid fa-mobile-screen me-2" style="color:#4CAF50"></i>EasyPaisa</button>
+              <button class="pay-tab" data-tab="jazzcash" onclick="switchPayTab('jazzcash',this)" style="border:1.5px solid var(--border);background:white;color:var(--dark);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fa-solid fa-mobile-screen me-2" style="color:#EF1C25"></i>JazzCash</button>
               <button class="pay-tab" data-tab="cod" onclick="switchPayTab('cod',this)" style="border:1.5px solid var(--border);background:white;color:var(--dark);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fa-solid fa-money-bill me-2 text-success"></i>Cash on Delivery</button>
             </div>
 
@@ -230,6 +231,37 @@
                 <div class="p-3 rounded-2 d-flex align-items-center gap-2" style="background:#dcfce7">
                   <i class="fa-solid fa-shield-halved" style="color:#16a34a"></i>
                   <span class="small" style="color:#15803d">Your payment is secured and encrypted by EasyPaisa</span>
+                </div>
+              </div>
+            </div>
+
+            <div id="tab-jazzcash" class="d-none">
+              <div class="p-4 rounded-3" style="background:#fff5f5;border:1.5px solid #fecaca">
+                <div class="d-flex align-items-center gap-3 mb-3">
+                  <div style="width:52px;height:52px;border-radius:12px;background:#EF1C25;display:flex;align-items:center;justify-content:center;flex-shrink:0">
+                    <i class="fa-solid fa-mobile-screen" style="color:#fff;font-size:1.4rem"></i>
+                  </div>
+                  <div>
+                    <div class="fw-700" style="color:#b91c1c;font-size:1rem">JazzCash Mobile Payment</div>
+                    <div class="small text-muted">Pay securely using your JazzCash account</div>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-500">JazzCash Mobile Number</label>
+                  <div class="input-group">
+                    <span class="input-group-text" style="background:#EF1C25;color:#fff;border-color:#EF1C25;font-weight:600">+92</span>
+                    <input type="text" class="form-control" id="jc-mobile" placeholder="3XX XXXXXXX" maxlength="10" style="border-color:#fca5a5">
+                  </div>
+                  <div class="small text-muted mt-1">A confirmation code will be sent to this number</div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label fw-500">JazzCash MPIN</label>
+                  <input type="password" class="form-control" id="jc-mpin" placeholder="Enter 6-digit MPIN" maxlength="6" style="border-color:#fca5a5">
+                  <div class="small text-muted mt-1">Your 6-digit JazzCash MPIN</div>
+                </div>
+                <div class="p-3 rounded-2 d-flex align-items-center gap-2" style="background:#fee2e2">
+                  <i class="fa-solid fa-shield-halved" style="color:#dc2626"></i>
+                  <span class="small" style="color:#b91c1c">Your payment is secured and encrypted by JazzCash</span>
                 </div>
               </div>
             </div>
@@ -549,7 +581,7 @@ function switchPayTab(tab, btn) {
   btn.style.background = 'var(--primary-light)';
   btn.style.borderColor = 'var(--primary)';
   btn.style.color = 'var(--primary)';
-  ['card', 'easypaisa', 'cod'].forEach(function(t) {
+  ['card', 'easypaisa', 'jazzcash', 'cod'].forEach(function(t) {
     document.getElementById('tab-' + t).classList.add('d-none');
   });
   document.getElementById('tab-' + tab).classList.remove('d-none');
@@ -557,7 +589,7 @@ function switchPayTab(tab, btn) {
   // Update review payment method display
   var payEl = document.getElementById('review-payment-method');
   if (payEl) {
-    var icons = { card: '<i class="fab fa-cc-visa" style="color:#1a1f71;font-size:1.3rem"></i><div><div class="fw-500 text-dark">Credit / Debit Card</div></div>', easypaisa: '<i class="fa-solid fa-mobile-screen" style="color:#4CAF50;font-size:1.3rem"></i><div><div class="fw-500 text-dark">EasyPaisa</div></div>', cod: '<i class="fa-solid fa-money-bill" style="color:var(--success);font-size:1.3rem"></i><div><div class="fw-500 text-dark">Cash on Delivery</div></div>' };
+    var icons = { card: '<i class="fab fa-cc-visa" style="color:#1a1f71;font-size:1.3rem"></i><div><div class="fw-500 text-dark">Credit / Debit Card</div></div>', easypaisa: '<i class="fa-solid fa-mobile-screen" style="color:#4CAF50;font-size:1.3rem"></i><div><div class="fw-500 text-dark">EasyPaisa</div></div>', jazzcash: '<i class="fa-solid fa-mobile-screen" style="color:#EF1C25;font-size:1.3rem"></i><div><div class="fw-500 text-dark">JazzCash</div></div>', cod: '<i class="fa-solid fa-money-bill" style="color:var(--success);font-size:1.3rem"></i><div><div class="fw-500 text-dark">Cash on Delivery</div></div>' };
     payEl.innerHTML = icons[tab] || icons.card;
   }
 }
