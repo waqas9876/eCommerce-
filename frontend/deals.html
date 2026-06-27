@@ -177,8 +177,9 @@ async function loadDeals() {
     _dealProducts = (data.products || []).filter(function(p){ return (p.discount || 0) > 0; });
     renderDeals();
   } catch(e) {
-    document.getElementById('deals-grid').innerHTML =
-      '<div class="col-12 text-center py-5 text-muted"><i class="fa-solid fa-circle-exclamation me-2"></i>Could not load deals. Is the server running?</div>';
+    // Fall back to static catalog — show products that have a discount
+    _dealProducts = Object.values(PRODUCT_CATALOG).filter(function(p){ return (p.discount || 0) > 0; });
+    renderDeals();
   }
 }
 

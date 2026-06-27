@@ -461,8 +461,41 @@
         + '</div></div></div>';
     }).join('');
   } catch(e) {
-    grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">Could not load products.</div>';
+    // API unreachable (no backend) — fall back to static catalog
+    var fallback = Object.values(PRODUCT_CATALOG).slice(0, 8);
+    if (!fallback.length) {
+      grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">No products available yet.</div>';
+      return;
+    }
+    grid.innerHTML = fallback.map(function(p) {
+      var img = p.imgs && p.imgs[0] ? p.imgs[0] : '';
+      var imgHtml = img
+        ? '<img src="' + img + '" alt="' + (p.name||'').replace(/"/g,'') + '" style="width:100%;height:100%;object-fit:cover">'
+        : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--gray-100)"><i class="fa-solid fa-image fa-2x" style="color:var(--gray-300)"></i></div>';
+      var badge = p.discount > 0 ? '<span class="product-card-badge badge-sale">-' + p.discount + '%</span>' : '';
+      var stars = '';
+      var r = Math.round(p.rating || 0);
+      for (var i = 1; i <= 5; i++) stars += '<i class="fa-' + (i <= r ? 'solid' : 'regular') + ' fa-star"></i>';
+      var priceHtml = '<span class="price-current">$' + parseFloat(p.price).toFixed(2) + '</span>';
+      if (p.original) priceHtml += '<span class="price-original">$' + parseFloat(p.original).toFixed(2) + '</span>'
+        + '<span class="price-discount">-' + (p.discount || 0) + '%</span>';
+      return '<div class="col"><div class="product-card">'
+        + '<div class="product-card-img">' + imgHtml + badge
+        + '<div class="product-card-actions">'
+        + '<button class="action-btn" title="Wishlist" onclick="Wishlist&&Wishlist.toggle({id:' + p.id + ',name:' + JSON.stringify(p.name) + ',price:' + p.price + '})"><i class="fa-regular fa-heart"></i></button>'
+        + '<button class="action-btn" title="View" onclick="window.location.href=\'product-detail.html?id=' + p.id + '\'"><i class="fa-regular fa-eye"></i></button>'
+        + '</div></div>'
+        + '<div class="product-card-body">'
+        + '<div class="product-category-tag">' + (p.category || '') + '</div>'
+        + '<div class="product-title" onclick="window.location.href=\'product-detail.html?id=' + p.id + '\'" style="cursor:pointer">' + (p.name || '') + '</div>'
+        + (p.rating ? '<div class="product-rating"><span class="stars">' + stars + '</span><span class="text-dark fw-500">' + parseFloat(p.rating).toFixed(1) + '</span><span class="rating-count">(' + (p.reviews || 0) + ')</span></div>' : '')
+        + '<div class="product-price-row">' + priceHtml + '</div>'
+        + '<button class="btn-add-cart" data-id="' + p.id + '" data-name="' + (p.name||'').replace(/"/g,'') + '" data-price="' + p.price + '" data-img="' + (p.imgs && p.imgs[0] ? p.imgs[0] : '') + '">'
+        + '<i class="fa-solid fa-bag-shopping"></i> Add to Cart</button>'
+        + '</div></div></div>';
+    }).join('');
   }
+  initAddToCart();
 })();
 </script>
 </body>
