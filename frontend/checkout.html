@@ -335,8 +335,9 @@
             </div>
             <p class="text-muted small mb-4">A confirmation has been saved. Your order will be delivered within 2-5 business days.</p>
             <div class="d-flex gap-3 justify-content-center flex-wrap">
-              <a href="account.html" class="btn btn-primary">View My Orders</a>
-              <a href="products.html" class="btn btn-secondary-outline">Continue Shopping</a>
+              <a href="account.html" class="btn btn-primary"><i class="fa-solid fa-box me-2"></i>View My Orders</a>
+              <a id="track-order-btn" href="track-order.html" class="btn" style="background:var(--primary);color:#fff;border:none"><i class="fa-solid fa-location-dot me-2"></i>Track Order</a>
+              <a href="products.html" class="btn btn-secondary-outline"><i class="fa-solid fa-store me-2"></i>Continue Shopping</a>
             </div>
           </div>
         </div>
@@ -651,6 +652,8 @@ async function placeOrder() {
         localStorage.removeItem('ecomx_cart');
         Cart.updateBadge();
         document.getElementById('confirm-order-num').textContent = '#' + oNum;
+        var trackBtn = document.getElementById('track-order-btn');
+        if (trackBtn) trackBtn.href = 'track-order.html?order=' + encodeURIComponent(oNum);
         goToStep(4);
         return;
       }
