@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cart — EcomX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-main navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Ecom<span>X</span></a>
+    <div class="navbar-search d-none d-lg-block mx-3">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" placeholder="Search products...">
+    </div>
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+        <a href="cart.html" class="cart-btn position-relative">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cart-count" style="display:none">0</span>
+        </a>
+        <!-- User menu (shown when logged in) -->
+        <div class="dropdown" id="nav-user-menu" style="display:none">
+          <button class="btn btn-sm d-flex align-items-center gap-2 px-3" style="background:var(--primary);color:#fff;border-radius:50px;font-family:var(--font)" data-bs-toggle="dropdown">
+            <span class="nav-user-initials fw-bold"></span>
+            <span class="nav-user-name"></span>
+            <i class="fa-solid fa-chevron-down small ms-1"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end nav-user-dropdown shadow" style="min-width:220px"></ul>
+        </div>
+        <!-- Auth buttons (shown when logged out) -->
+        <a href="login.html" class="btn btn-secondary-outline btn-sm" id="nav-login-btn">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm" id="nav-register-btn">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="container">
+    <nav aria-label="breadcrumb"><ol class="breadcrumb mb-2"><li class="breadcrumb-item"><a href="index.html">Home</a></li><li class="breadcrumb-item active">Shopping Cart</li></ol></nav>
+    <h1 class="page-hero-title">Shopping Cart</h1>
+  </div>
+</div>
+
+<div class="container py-4">
+  <div class="row g-4">
+
+    <!-- ── CART ITEMS ── -->
+    <div class="col-lg-8">
+      <div class="cart-table">
+        <table class="w-100">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="d-none d-md-table-cell">Price</th>
+              <th>Qty</th>
+              <th>Total</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="cart-items-body">
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Cart Actions -->
+      <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap gap-2">
+        <a href="products.html" class="btn btn-secondary-outline btn-sm">
+          <i class="fa-solid fa-arrow-left me-2"></i>Continue Shopping
+        </a>
+        <button class="btn btn-sm" style="border:1.5px solid var(--border);color:var(--gray-500)">
+          <i class="fa-solid fa-rotate me-2"></i>Update Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- ── ORDER SUMMARY ── -->
+    <div class="col-lg-4">
+      <div class="order-summary-card mb-3">
+        <div class="fw-700 mb-3" style="font-size:1.05rem">Order Summary</div>
+
+        <div class="order-summary-row">
+          <span id="summary-subtotal-label" class="order-summary-label">Subtotal (0 items)</span>
+          <span id="summary-subtotal" class="fw-600">$0.00</span>
+        </div>
+        <div class="order-summary-row">
+          <span class="order-summary-label">Shipping</span>
+          <span class="fw-500 text-success">Free</span>
+        </div>
+        <div class="order-summary-row">
+          <span class="order-summary-label">Tax (10%)</span>
+          <span id="summary-tax" class="fw-500">$0.00</span>
+        </div>
+        <div class="order-summary-row d-flex justify-content-between" style="border-top:2px solid var(--border);margin-top:.5rem;padding-top:.75rem;border-bottom:none">
+          <span class="order-summary-total">Total</span>
+          <span id="summary-total" class="order-summary-total" style="color:var(--primary)">$0.00</span>
+        </div>
+
+        <a href="checkout.html" class="btn btn-primary w-100 btn-lg mt-3">
+          Proceed to Checkout <i class="fa-solid fa-arrow-right ms-2"></i>
+        </a>
+      </div>
+
+      <!-- Coupon -->
+      <div class="order-summary-card">
+        <div class="fw-600 mb-2" style="font-size:.9rem">Have a Coupon?</div>
+        <div class="input-group">
+          <input type="text" class="form-control" placeholder="Enter coupon code" value="ECOMX50">
+          <button class="btn btn-primary" style="border-radius:0 var(--radius-sm) var(--radius-sm) 0;font-family:var(--font)">Apply</button>
+        </div>
+        <div class="mt-2 d-flex align-items-center gap-1" style="font-size:.8rem;color:var(--success)">
+          <i class="fa-solid fa-circle-check"></i> Coupon applied! $50 off
+        </div>
+      </div>
+
+      <!-- Trust badges -->
+      <div class="mt-3 p-3 rounded-3" style="background:var(--white);border:1.5px solid var(--border)">
+        <div class="d-flex flex-column gap-2" style="font-size:.8rem;color:var(--gray-500)">
+          <div class="d-flex align-items-center gap-2"><i class="fa-solid fa-shield-halved text-success"></i>Secure 256-bit SSL encryption</div>
+          <div class="d-flex align-items-center gap-2"><i class="fa-solid fa-rotate-left text-primary"></i>30-day hassle-free returns</div>
+          <div class="d-flex align-items-center gap-2"><i class="fa-solid fa-truck-fast text-warning"></i>Estimated delivery: 2-5 days</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── YOU MAY ALSO LIKE ── -->
+  <div class="mt-5">
+    <h5 class="fw-700 mb-3">You May Also Like</h5>
+    <div class="row g-3 row-cols-2 row-cols-md-4">
+      <div class="col"><div class="product-card"><div class="product-card-img"><img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=400&h=400&fit=crop" alt="Speaker"></div><div class="product-card-body"><div class="product-title">SoundWave Pro Speaker</div><div class="product-price-row"><span class="price-current">$69.99</span></div><button class="btn-add-cart" data-id="11" data-name="SoundWave Pro" data-price="69.99"><i class="fa-solid fa-bag-shopping"></i> Add</button></div></div></div>
+      <div class="col"><div class="product-card"><div class="product-card-img"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop" alt="Watch"></div><div class="product-card-body"><div class="product-title">FitPulse Smart Watch</div><div class="product-price-row"><span class="price-current">$149.00</span></div><button class="btn-add-cart" data-id="3" data-name="FitPulse Smart Watch" data-price="149.00"><i class="fa-solid fa-bag-shopping"></i> Add</button></div></div></div>
+      <div class="col"><div class="product-card"><div class="product-card-img"><img src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=400&h=400&fit=crop" alt="Skincare"></div><div class="product-card-body"><div class="product-title">GlowUp Vitamin C Set</div><div class="product-price-row"><span class="price-current">$42.00</span></div><button class="btn-add-cart" data-id="10" data-name="GlowUp Skincare" data-price="42.00"><i class="fa-solid fa-bag-shopping"></i> Add</button></div></div></div>
+      <div class="col"><div class="product-card"><div class="product-card-img"><img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400&h=400&fit=crop" alt="Coffee"></div><div class="product-card-body"><div class="product-title">BrewMaster Coffee Machine</div><div class="product-price-row"><span class="price-current">$119.00</span></div><button class="btn-add-cart" data-id="8" data-name="BrewMaster" data-price="119.00"><i class="fa-solid fa-bag-shopping"></i> Add</button></div></div></div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer mt-5">
+  <div class="footer-bottom" style="border-top:none;padding:1.5rem 0">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <a href="index.html" class="footer-logo" style="font-size:1.2rem">Ecom<span>X</span></a>
+      <p style="font-size:.8rem;color:rgba(255,255,255,.35);margin:0">&copy; 2026 EcomX. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

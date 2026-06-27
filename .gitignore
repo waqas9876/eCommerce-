@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pyw
+.env
+venv/
+env/
+.venv/
+*.egg-info/
+dist/
+build/
+
+# Flask / backend
+backend/instance/
+backend/*.db
+backend/*.sqlite
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE
+.vscode/
+.idea/
+*.suo
+*.user
+
+# Node (if ever added)
+node_modules/
+
+# Uploads (user-generated content — large binary files)
+frontend/assets/uploads/*
+!frontend/assets/uploads/.gitkeep

@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout — EcomX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    .co-item-row { display:flex; align-items:center; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); }
+    .co-item-row:last-child { border-bottom:none; }
+    .co-item-img { width:46px; height:46px; border-radius:8px; object-fit:cover; flex-shrink:0; border:1.5px solid var(--border); }
+    .co-item-name { font-size:.82rem; font-weight:600; line-height:1.35; flex:1; min-width:0; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; }
+    .co-item-price { font-size:.82rem; font-weight:700; color:var(--primary); white-space:nowrap; }
+    .co-remove-btn { background:none; border:none; color:var(--gray-400); cursor:pointer; padding:2px 5px; font-size:.8rem; flex-shrink:0; border-radius:4px; line-height:1; transition:color .15s,background .15s; }
+    .co-remove-btn:hover { color:var(--danger); background:var(--danger-light); }
+    .review-item { display:flex; align-items:center; gap:12px; padding:10px 0; border-bottom:1px solid var(--border); }
+    .review-item:last-child { border-bottom:none; }
+    .review-item img { width:60px; height:60px; border-radius:10px; object-fit:cover; border:1.5px solid var(--border); flex-shrink:0; }
+    .empty-cart-notice { text-align:center; padding:2rem; color:var(--gray-500); }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR (minimal) -->
+<nav class="navbar navbar-main">
+  <div class="container d-flex align-items-center justify-content-between">
+    <a class="navbar-brand" href="index.html">Ecom<span>X</span></a>
+    <div class="d-flex align-items-center gap-2" style="font-size:.85rem;color:var(--gray-400)">
+      <i class="fa-solid fa-lock me-1"></i> Secure Checkout
+    </div>
+  </div>
+</nav>
+
+<div class="container py-4">
+
+  <!-- Steps -->
+  <div class="checkout-steps mb-4">
+    <div class="step-item active" id="step-dot-1">
+      <div class="step-circle">1</div>
+      <div class="step-label">Shipping</div>
+    </div>
+    <div class="step-line" id="step-line-1"></div>
+    <div class="step-item" id="step-dot-2">
+      <div class="step-circle">2</div>
+      <div class="step-label">Payment</div>
+    </div>
+    <div class="step-line" id="step-line-2"></div>
+    <div class="step-item" id="step-dot-3">
+      <div class="step-circle">3</div>
+      <div class="step-label">Review</div>
+    </div>
+    <div class="step-line" id="step-line-3"></div>
+    <div class="step-item" id="step-dot-4">
+      <div class="step-circle"><i class="fa-solid fa-check" style="font-size:.75rem"></i></div>
+      <div class="step-label">Confirm</div>
+    </div>
+  </div>
+
+  <div class="row g-4">
+    <!-- LEFT COLUMN -->
+    <div class="col-lg-7">
+
+      <!-- ── STEP 1: SHIPPING ── -->
+      <div id="step-1" class="checkout-step-panel">
+        <div class="data-card">
+          <div class="data-card-header">
+            <div class="data-card-title"><i class="fa-solid fa-truck me-2" style="color:var(--primary)"></i>Shipping Address</div>
+          </div>
+          <div class="p-4">
+            <div class="row g-3">
+              <div class="col-6">
+                <label class="form-label">First Name</label>
+                <input type="text" class="form-control" id="co-fname" placeholder="John">
+              </div>
+              <div class="col-6">
+                <label class="form-label">Last Name</label>
+                <input type="text" class="form-control" id="co-lname" placeholder="Doe">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Email Address</label>
+                <input type="email" class="form-control" id="co-email" placeholder="you@example.com">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Phone Number</label>
+                <input type="tel" class="form-control" id="co-phone" placeholder="+92 300 0000000">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Street Address</label>
+                <input type="text" class="form-control" id="co-street" placeholder="123 Main Street, Apt 4B">
+              </div>
+              <div class="col-4">
+                <label class="form-label">City</label>
+                <input type="text" class="form-control" id="co-city" placeholder="City">
+              </div>
+              <div class="col-4">
+                <label class="form-label">State / Province</label>
+                <input type="text" class="form-control" id="co-state" placeholder="State">
+              </div>
+              <div class="col-4">
+                <label class="form-label">ZIP / Postal</label>
+                <input type="text" class="form-control" id="co-zip" placeholder="54000">
+              </div>
+              <div class="col-12">
+                <label class="form-label">Country</label>
+                <select class="form-control" id="co-country">
+                  <option>Pakistan</option>
+                  <option>United States</option>
+                  <option>United Kingdom</option>
+                  <option>UAE</option>
+                  <option>Canada</option>
+                </select>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Delivery Notes (Optional)</label>
+                <textarea class="form-control" id="co-notes" rows="2" placeholder="Ring the doorbell, leave at door, etc."></textarea>
+              </div>
+            </div>
+
+            <!-- Shipping Method -->
+            <div class="mt-4">
+              <div class="fw-600 mb-3">Shipping Method</div>
+              <div class="d-flex flex-column gap-2">
+                <label class="d-flex align-items-center gap-3 p-3 rounded-3 cursor-pointer" style="border:1.5px solid var(--primary);background:var(--primary-light);cursor:pointer">
+                  <input type="radio" name="shipping" value="0" checked style="accent-color:var(--primary)" onchange="updateTotals()">
+                  <div class="flex-fill">
+                    <div class="fw-600" style="font-size:.875rem">Standard Delivery</div>
+                    <div style="font-size:.8rem;color:var(--gray-500)">2-5 business days</div>
+                  </div>
+                  <div class="fw-700 text-success">Free</div>
+                </label>
+                <label class="d-flex align-items-center gap-3 p-3 rounded-3" style="border:1.5px solid var(--border);cursor:pointer">
+                  <input type="radio" name="shipping" value="9.99" style="accent-color:var(--primary)" onchange="updateTotals()">
+                  <div class="flex-fill">
+                    <div class="fw-600" style="font-size:.875rem">Express Delivery</div>
+                    <div style="font-size:.8rem;color:var(--gray-500)">Next business day</div>
+                  </div>
+                  <div class="fw-700">$9.99</div>
+                </label>
+                <label class="d-flex align-items-center gap-3 p-3 rounded-3" style="border:1.5px solid var(--border);cursor:pointer">
+                  <input type="radio" name="shipping" value="19.99" style="accent-color:var(--primary)" onchange="updateTotals()">
+                  <div class="flex-fill">
+                    <div class="fw-600" style="font-size:.875rem">Same-Day Delivery</div>
+                    <div style="font-size:.8rem;color:var(--gray-500)">Order before 12pm</div>
+                  </div>
+                  <div class="fw-700">$19.99</div>
+                </label>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <a href="cart.html" class="btn btn-secondary-outline"><i class="fa-solid fa-arrow-left me-2"></i>Back to Cart</a>
+              <button class="btn btn-primary" onclick="goToStep(2)">Continue to Payment <i class="fa-solid fa-arrow-right ms-2"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 2: PAYMENT ── -->
+      <div id="step-2" class="checkout-step-panel d-none">
+        <div class="data-card">
+          <div class="data-card-header">
+            <div class="data-card-title"><i class="fa-solid fa-credit-card me-2" style="color:var(--primary)"></i>Payment Method</div>
+          </div>
+          <div class="p-4">
+            <div class="d-flex gap-2 mb-4 flex-wrap">
+              <button class="pay-tab active" data-tab="card" onclick="switchPayTab('card',this)" style="border:1.5px solid var(--primary);background:var(--primary-light);color:var(--primary);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fa-solid fa-credit-card me-2"></i>Credit/Debit Card</button>
+              <button class="pay-tab" data-tab="paypal" onclick="switchPayTab('paypal',this)" style="border:1.5px solid var(--border);background:white;color:var(--dark);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fab fa-paypal me-2 text-primary"></i>PayPal</button>
+              <button class="pay-tab" data-tab="cod" onclick="switchPayTab('cod',this)" style="border:1.5px solid var(--border);background:white;color:var(--dark);border-radius:var(--radius-sm);padding:.5rem 1.1rem;font-family:var(--font);font-size:.875rem;font-weight:500;cursor:pointer"><i class="fa-solid fa-money-bill me-2 text-success"></i>Cash on Delivery</button>
+            </div>
+
+            <div id="tab-card">
+              <div class="row g-3">
+                <div class="col-12">
+                  <label class="form-label">Cardholder Name</label>
+                  <input type="text" class="form-control" id="co-card-name" placeholder="As it appears on card">
+                </div>
+                <div class="col-12">
+                  <label class="form-label">Card Number</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19">
+                    <span class="input-group-text"><i class="fab fa-cc-visa text-primary"></i></span>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <label class="form-label">Expiry Date</label>
+                  <input type="text" class="form-control" placeholder="MM / YY">
+                </div>
+                <div class="col-6">
+                  <label class="form-label">CVV</label>
+                  <div class="input-group">
+                    <input type="password" class="form-control" placeholder="•••">
+                    <span class="input-group-text"><i class="fa-solid fa-circle-question text-muted" style="font-size:.85rem"></i></span>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <label class="d-flex align-items-center gap-2 small" style="cursor:pointer;color:var(--gray-500)">
+                    <input type="checkbox" style="accent-color:var(--primary)"> Save card for future purchases
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <div id="tab-paypal" class="d-none text-center py-4">
+              <div style="font-size:3rem;color:#003087"><i class="fab fa-paypal"></i></div>
+              <p class="text-muted mt-2">You'll be redirected to PayPal to complete your payment securely.</p>
+              <button class="btn btn-primary">Pay with PayPal</button>
+            </div>
+
+            <div id="tab-cod" class="d-none">
+              <div class="p-4 rounded-3 text-center" style="background:var(--success-light)">
+                <i class="fa-solid fa-money-bill fa-2x mb-2" style="color:var(--success)"></i>
+                <h5 class="fw-600" style="color:var(--success)">Cash on Delivery Selected</h5>
+                <p class="text-muted small mb-0">Pay with cash when your order arrives. Our delivery person will collect the payment.</p>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button class="btn btn-secondary-outline" onclick="goToStep(1)"><i class="fa-solid fa-arrow-left me-2"></i>Back</button>
+              <button class="btn btn-primary" onclick="goToStep(3)">Review Order <i class="fa-solid fa-arrow-right ms-2"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 3: REVIEW ── -->
+      <div id="step-3" class="checkout-step-panel d-none">
+        <div class="data-card">
+          <div class="data-card-header">
+            <div class="data-card-title"><i class="fa-solid fa-list-check me-2" style="color:var(--primary)"></i>Review Your Order</div>
+          </div>
+          <div class="p-4">
+            <!-- Dynamic Items -->
+            <div class="mb-4">
+              <div class="fw-600 mb-3" id="review-item-count">Order Items</div>
+              <div id="review-items-list"></div>
+            </div>
+
+            <!-- Shipping + Payment summary -->
+            <div class="row g-3">
+              <div class="col-md-6">
+                <div class="fw-600 mb-2 small">Shipping To</div>
+                <div class="p-3 rounded-3" style="background:var(--gray-100);font-size:.875rem;line-height:1.7;color:var(--gray-600)" id="review-shipping-addr">—</div>
+              </div>
+              <div class="col-md-6">
+                <div class="fw-600 mb-2 small">Payment Method</div>
+                <div class="p-3 rounded-3 d-flex align-items-center gap-2" style="background:var(--gray-100);font-size:.875rem;color:var(--gray-600)" id="review-payment-method">
+                  <i class="fab fa-cc-visa" style="color:#1a1f71;font-size:1.3rem"></i>
+                  <div><div class="fw-500 text-dark">Credit / Debit Card</div><div style="font-size:.75rem">Secure payment</div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+              <button class="btn btn-secondary-outline" onclick="goToStep(2)"><i class="fa-solid fa-arrow-left me-2"></i>Back</button>
+              <button class="btn btn-accent btn-lg" id="place-order-btn" onclick="placeOrder()">
+                <i class="fa-solid fa-check me-2"></i>Place Order — <span id="place-order-total">$0.00</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STEP 4: CONFIRMATION ── -->
+      <div id="step-4" class="checkout-step-panel d-none">
+        <div class="data-card">
+          <div class="p-5 text-center">
+            <div style="width:80px;height:80px;background:var(--success-light);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.5rem">
+              <i class="fa-solid fa-check fa-2x" style="color:var(--success)"></i>
+            </div>
+            <h3 class="fw-800 mb-1">Order Confirmed!</h3>
+            <p class="text-muted mb-3">Thank you for your purchase. Your order has been placed successfully.</p>
+            <div class="p-3 rounded-3 d-inline-block mb-4" style="background:var(--gray-100)">
+              <span class="text-muted small">Order Number: </span>
+              <span class="fw-700" id="confirm-order-num">#ECX-00001</span>
+            </div>
+            <p class="text-muted small mb-4">A confirmation has been saved. Your order will be delivered within 2-5 business days.</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+              <a href="account.html" class="btn btn-primary">View My Orders</a>
+              <a href="products.html" class="btn btn-secondary-outline">Continue Shopping</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: Order Summary -->
+    <div class="col-lg-5">
+      <div class="order-summary-card" id="order-summary-card">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <div class="fw-700">Order Summary</div>
+          <a href="cart.html" class="small" style="color:var(--primary)">Edit Cart</a>
+        </div>
+
+        <!-- Dynamic item list -->
+        <div id="summary-items" class="mb-3 pb-3" style="border-bottom:1px solid var(--border)"></div>
+
+        <!-- Coupon -->
+        <div class="d-flex gap-2 mb-3">
+          <input type="text" class="form-control form-control-sm" id="coupon-input" placeholder="Coupon code">
+          <button class="btn btn-sm btn-secondary-outline px-3" onclick="applyCoupon()" style="white-space:nowrap">Apply</button>
+        </div>
+        <div id="coupon-msg" class="small mb-2" style="display:none"></div>
+
+        <div class="order-summary-row"><span class="order-summary-label">Subtotal (<span id="sum-item-count">0</span> items)</span><span class="fw-600" id="sum-subtotal">$0.00</span></div>
+        <div class="order-summary-row"><span class="order-summary-label">Shipping</span><span id="sum-shipping" class="text-success fw-500">Free</span></div>
+        <div class="order-summary-row" id="sum-discount-row" style="display:none"><span class="order-summary-label">Discount</span><span class="text-danger fw-500" id="sum-discount">−$0.00</span></div>
+        <div class="order-summary-row"><span class="order-summary-label">Tax (10%)</span><span class="fw-500" id="sum-tax">$0.00</span></div>
+        <div class="d-flex justify-content-between mt-2 pt-2" style="border-top:2px solid var(--border)">
+          <span class="fw-700 fs-6">Total</span>
+          <span class="fw-800 fs-5" style="color:var(--primary)" id="sum-total">$0.00</span>
+        </div>
+      </div>
+
+      <div class="mt-3 p-3 rounded-3 text-center" style="background:var(--white);border:1.5px solid var(--border)">
+        <div class="d-flex justify-content-center gap-3 mb-2">
+          <i class="fa-solid fa-shield-halved fa-lg" style="color:var(--success)"></i>
+          <i class="fab fa-cc-visa fa-lg" style="color:#1a1f71"></i>
+          <i class="fab fa-cc-mastercard fa-lg" style="color:#eb001b"></i>
+          <i class="fab fa-paypal fa-lg" style="color:#003087"></i>
+        </div>
+        <div style="font-size:.75rem;color:var(--gray-400)">256-bit SSL encrypted &amp; secure payment</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+/* ──────────────────────────────────────────
+   Checkout Page Logic
+────────────────────────────────────────── */
+
+var _couponDiscount = 0;
+var COUPONS = { 'SAVE10': 10, 'ECOMX20': 20, 'WELCOME5': 5 };
+
+// ── Helpers ──
+function getCartItems() { return Cart.get(); }
+
+function getShipping() {
+  var r = document.querySelector('input[name="shipping"]:checked');
+  return r ? parseFloat(r.value) : 0;
+}
+
+function calcTotals() {
+  var items    = getCartItems();
+  var subtotal = items.reduce(function(s, i) { return s + (parseFloat(i.price) * i.qty); }, 0);
+  var shipping = getShipping();
+  var discount = _couponDiscount ? (subtotal * _couponDiscount / 100) : 0;
+  var tax      = (subtotal - discount + shipping) * 0.1;
+  var total    = subtotal - discount + shipping + tax;
+  return { subtotal: subtotal, shipping: shipping, discount: discount, tax: tax, total: total,
+           count: items.reduce(function(s, i) { return s + i.qty; }, 0) };
+}
+
+function fmtMoney(n) { return '$' + parseFloat(n).toFixed(2); }
+
+function getProductImg(item) {
+  // Resolve a URL that may be relative (/assets/uploads/...) or absolute
+  function resolveUrl(u) {
+    if (!u) return '';
+    if (u.startsWith('http')) return u;
+    return (typeof api !== 'undefined' && api.BASE ? api.BASE : 'http://localhost:5000') + u;
+  }
+  // 1. Use image stored in cart item (from seller-uploaded product)
+  if (item.image) return resolveUrl(item.image);
+  // 2. Fall back to static catalog (for the 13 demo products)
+  var p = PRODUCT_CATALOG[parseInt(item.id)];
+  if (p && p.imgs && p.imgs[0]) return p.imgs[0].replace('w=600&h=600', 'w=80&h=80');
+  // 3. Generic placeholder — no more hardcoded backpack image
+  return 'https://via.placeholder.com/80x80?text=No+Image';
+}
+
+// ── Remove item from cart ──
+function removeCartItem(id) {
+  Cart.remove(id);
+  renderSummary();
+  renderReviewItems();
+  if (getCartItems().length === 0) {
+    window.location.href = 'cart.html';
+  }
+}
+
+// ── Render the right-column summary ──
+function renderSummary() {
+  var items = getCartItems();
+  var t     = calcTotals();
+  var el    = document.getElementById('summary-items');
+
+  if (!items.length) {
+    el.innerHTML = '<div class="empty-cart-notice"><i class="fa-solid fa-cart-xmark fa-2x mb-2"></i><br>Your cart is empty</div>';
+  } else {
+    el.innerHTML = items.map(function(item) {
+      var img  = getProductImg(item);
+      var name = item.name || 'Product';
+      var line = parseFloat(item.price) * item.qty;
+      return '<div class="co-item-row">'
+        + '<img src="' + img + '" class="co-item-img" onerror="this.src=\'https://via.placeholder.com/80x80?text=No+Image\'">'
+        + '<div class="co-item-name">' + name + (item.qty > 1 ? ' <span style="color:var(--gray-400);font-weight:400">x' + item.qty + '</span>' : '') + '</div>'
+        + '<div class="co-item-price">' + fmtMoney(line) + '</div>'
+        + '<button class="co-remove-btn" onclick="removeCartItem(\'' + item.id + '\')" title="Remove item">'
+        + '<i class="fa-solid fa-xmark"></i></button>'
+        + '</div>';
+    }).join('');
+  }
+
+  // Update totals
+  document.getElementById('sum-item-count').textContent = t.count;
+  document.getElementById('sum-subtotal').textContent   = fmtMoney(t.subtotal);
+  document.getElementById('sum-shipping').textContent   = t.shipping > 0 ? fmtMoney(t.shipping) : 'Free';
+  document.getElementById('sum-shipping').className     = t.shipping > 0 ? 'fw-500' : 'text-success fw-500';
+  document.getElementById('sum-tax').textContent        = fmtMoney(t.tax);
+  document.getElementById('sum-total').textContent      = fmtMoney(t.total);
+
+  var discRow = document.getElementById('sum-discount-row');
+  if (t.discount > 0) {
+    discRow.style.display = '';
+    document.getElementById('sum-discount').textContent = '−' + fmtMoney(t.discount);
+  } else {
+    discRow.style.display = 'none';
+  }
+
+  // Update Place Order button total
+  var poTotal = document.getElementById('place-order-total');
+  if (poTotal) poTotal.textContent = fmtMoney(t.total);
+}
+
+// ── Render Step 3 review items ──
+function renderReviewItems() {
+  var items = getCartItems();
+  var list  = document.getElementById('review-items-list');
+  var count = document.getElementById('review-item-count');
+  if (!list) return;
+
+  if (count) count.textContent = 'Order Items (' + items.length + ')';
+
+  if (!items.length) {
+    list.innerHTML = '<div class="empty-cart-notice">No items in cart</div>';
+    return;
+  }
+
+  list.innerHTML = items.map(function(item) {
+    var img  = getProductImg(item);
+    var name = item.name || 'Product';
+    var line = parseFloat(item.price) * item.qty;
+    return '<div class="review-item">'
+      + '<img src="' + img + '" onerror="this.src=\'https://via.placeholder.com/80x80?text=No+Image\'">'
+      + '<div class="flex-fill">'
+      + '<div class="fw-600 small">' + name + '</div>'
+      + '<div class="text-muted" style="font-size:.75rem">Qty: ' + item.qty + ' &nbsp;·&nbsp; ' + fmtMoney(item.price) + ' each</div>'
+      + '</div>'
+      + '<div class="fw-700" style="color:var(--primary)">' + fmtMoney(line) + '</div>'
+      + '<button class="co-remove-btn ms-2" onclick="removeCartItem(\'' + item.id + '\')" title="Remove item">'
+      + '<i class="fa-solid fa-trash-can"></i></button>'
+      + '</div>';
+  }).join('');
+}
+
+// ── Coupon ──
+function applyCoupon() {
+  var code = (document.getElementById('coupon-input').value || '').trim().toUpperCase();
+  var msg  = document.getElementById('coupon-msg');
+  msg.style.display = '';
+  if (COUPONS[code]) {
+    _couponDiscount = COUPONS[code];
+    msg.style.color = 'var(--success)';
+    msg.textContent = 'Coupon applied! ' + _couponDiscount + '% off your order.';
+  } else {
+    _couponDiscount = 0;
+    msg.style.color = 'var(--danger)';
+    msg.textContent = 'Invalid coupon code.';
+  }
+  renderSummary();
+}
+
+// ── Step navigation ──
+function goToStep(n) {
+  for (var i = 1; i <= 4; i++) {
+    var el = document.getElementById('step-' + i);
+    if (el) el.classList.add('d-none');
+  }
+  var target = document.getElementById('step-' + n);
+  if (target) target.classList.remove('d-none');
+
+  document.querySelectorAll('.step-item').forEach(function(s, i) {
+    s.classList.toggle('active', i === n - 1);
+    s.classList.toggle('done', i < n - 1);
+    var circle = s.querySelector('.step-circle');
+    if (circle) {
+      circle.innerHTML = i < n - 1 ? '<i class="fa-solid fa-check" style="font-size:.75rem"></i>' : (i + 1);
+    }
+  });
+
+  // When reaching review step, populate the shipping summary
+  if (n === 3) {
+    renderReviewItems();
+    var fname  = document.getElementById('co-fname').value;
+    var lname  = document.getElementById('co-lname').value;
+    var street = document.getElementById('co-street').value;
+    var city   = document.getElementById('co-city').value;
+    var state  = document.getElementById('co-state').value;
+    var zip    = document.getElementById('co-zip').value;
+    var country = document.getElementById('co-country').value;
+    var addr = document.getElementById('review-shipping-addr');
+    if (addr) addr.innerHTML = [fname + ' ' + lname, street, city + ', ' + state + ' ' + zip, country].filter(Boolean).join('<br>');
+
+    // Update Place Order total
+    var t = calcTotals();
+    var poTotal = document.getElementById('place-order-total');
+    if (poTotal) poTotal.textContent = fmtMoney(t.total);
+  }
+}
+
+// ── Payment tab switch ──
+function switchPayTab(tab, btn) {
+  document.querySelectorAll('.pay-tab').forEach(function(b) {
+    b.style.background = 'white'; b.style.borderColor = 'var(--border)'; b.style.color = 'var(--dark)';
+  });
+  btn.style.background = 'var(--primary-light)';
+  btn.style.borderColor = 'var(--primary)';
+  btn.style.color = 'var(--primary)';
+  ['card', 'paypal', 'cod'].forEach(function(t) {
+    document.getElementById('tab-' + t).classList.add('d-none');
+  });
+  document.getElementById('tab-' + tab).classList.remove('d-none');
+
+  // Update review payment method display
+  var payEl = document.getElementById('review-payment-method');
+  if (payEl) {
+    var icons = { card: '<i class="fab fa-cc-visa" style="color:#1a1f71;font-size:1.3rem"></i><div><div class="fw-500 text-dark">Credit / Debit Card</div></div>', paypal: '<i class="fab fa-paypal" style="color:#003087;font-size:1.3rem"></i><div><div class="fw-500 text-dark">PayPal</div></div>', cod: '<i class="fa-solid fa-money-bill" style="color:var(--success);font-size:1.3rem"></i><div><div class="fw-500 text-dark">Cash on Delivery</div></div>' };
+    payEl.innerHTML = icons[tab] || icons.card;
+  }
+}
+
+// ── Update totals when shipping changes ──
+function updateTotals() { renderSummary(); }
+
+// ── Place Order ──
+async function placeOrder() {
+  var items = getCartItems();
+  if (!items.length) { alert('Your cart is empty.'); return; }
+
+  var btn = document.getElementById('place-order-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Processing...';
+
+  var t     = calcTotals();
+  var u     = Auth.get();
+  var token = Auth.token ? Auth.token() : localStorage.getItem('ecomx_token');
+
+  var shippingAddr = {
+    name:    (document.getElementById('co-fname').value + ' ' + document.getElementById('co-lname').value).trim(),
+    street:  document.getElementById('co-street').value,
+    city:    document.getElementById('co-city').value,
+    state:   document.getElementById('co-state').value,
+    zip:     document.getElementById('co-zip').value,
+    country: document.getElementById('co-country').value,
+    phone:   document.getElementById('co-phone').value,
+    email:   document.getElementById('co-email').value,
+  };
+
+  var couponCode = (document.getElementById('coupon-input').value || '').trim().toUpperCase();
+
+  var oNum = 'ECX-' + String(Date.now()).slice(-6);
+
+  // Try backend API
+  if (token) {
+    try {
+      var payload = {
+        items: items.map(function(i) { return { id: i.id, name: i.name, price: i.price, qty: i.qty }; }),
+        shipping_address: shippingAddr,
+        coupon_code: couponCode || null,
+        shipping_fee: t.shipping,
+      };
+      var r = await fetch(api.BASE + '/api/orders/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + token },
+        body: JSON.stringify(payload)
+      });
+      var d = await r.json();
+      if (r.ok && d.order) {
+        oNum = d.order.order_number || oNum;
+        // Save to localStorage for history
+        var orders = JSON.parse(localStorage.getItem('ecomx_orders') || '[]');
+        orders.push({ id: oNum, date: new Date().toLocaleDateString(), status: 'processing',
+          items: items.map(function(i){ return { name: i.name, qty: i.qty, price: i.price }; }),
+          total: t.total, customerEmail: u ? u.email : '' });
+        localStorage.setItem('ecomx_orders', JSON.stringify(orders));
+        localStorage.removeItem('ecomx_cart');
+        Cart.updateBadge();
+        document.getElementById('confirm-order-num').textContent = '#' + oNum;
+        goToStep(4);
+        return;
+      }
+      // API error - show message
+      var errMsg = (d && d.error) || 'Could not place order. Please try again.';
+      btn.disabled = false;
+      btn.innerHTML = '<i class="fa-solid fa-check me-2"></i>Place Order — <span id="place-order-total">' + fmtMoney(t.total) + '</span>';
+      alert(errMsg);
+      return;
+    } catch(e) {
+      // backend down, fall through to localStorage
+    }
+  }
+
+  // Fallback: localStorage only
+  var orders = JSON.parse(localStorage.getItem('ecomx_orders') || '[]');
+  orders.push({ id: oNum, date: new Date().toLocaleDateString(), status: 'processing',
+    items: items.map(function(i){ return { name: i.name, qty: i.qty, price: i.price }; }),
+    total: t.total, customerEmail: u ? u.email : '', shippingAddr: shippingAddr });
+  localStorage.setItem('ecomx_orders', JSON.stringify(orders));
+  localStorage.removeItem('ecomx_cart');
+  Cart.updateBadge();
+  document.getElementById('confirm-order-num').textContent = '#' + oNum;
+  goToStep(4);
+}
+
+// ── Init ──
+document.addEventListener('DOMContentLoaded', function() {
+  Auth.initUI();
+  Cart.updateBadge();
+
+  // Redirect if cart is empty
+  if (!getCartItems().length) {
+    window.location.href = 'cart.html';
+    return;
+  }
+
+  // Pre-fill shipping from logged-in user
+  var u = Auth.get();
+  if (u) {
+    var parts = (u.name || '').split(' ');
+    document.getElementById('co-fname').value = parts[0] || '';
+    document.getElementById('co-lname').value = parts.slice(1).join(' ') || '';
+    document.getElementById('co-email').value  = u.email || '';
+    document.getElementById('co-phone').value  = u.phone || '';
+    document.getElementById('co-card-name').value = u.name || '';
+    if (u.address) {
+      document.getElementById('co-street').value = u.address;
+    }
+  }
+
+  renderSummary();
+});
+</script>
+</body>
+</html>

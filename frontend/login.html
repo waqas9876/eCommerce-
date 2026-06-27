@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login — EcomX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<script>(function(){var u=null;try{u=JSON.parse(localStorage.getItem('ecomx_user')||'null');}catch(e){}if(u){var d={customer:'index.html',seller:'index.html',admin:'admin/dashboard.html'};window.location.replace(d[u.role]||'index.html');}})();</script>
+<body>
+
+<div class="auth-page">
+  <div class="auth-card">
+
+    <!-- Logo -->
+    <a href="index.html" class="auth-logo d-block mb-1">Ecom<span>X</span></a>
+
+    <h2 class="auth-title">Welcome back</h2>
+    <p class="auth-subtitle">Sign in to your account to continue shopping</p>
+
+    <!-- Social Login -->
+    <div class="d-flex gap-2 mb-3">
+      <button class="social-auth-btn">
+        <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google" width="18">
+        Google
+      </button>
+      <button class="social-auth-btn">
+        <i class="fab fa-facebook text-primary"></i>
+        Facebook
+      </button>
+    </div>
+
+    <div class="divider">or continue with email</div>
+
+    <!-- Form -->
+    <form id="login-form" onsubmit="handleLogin(event)">
+      <div class="mb-3">
+        <label class="form-label">Email Address</label>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa-regular fa-envelope"></i></span>
+          <input type="email" class="form-control" placeholder="you@example.com" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <div class="d-flex justify-content-between align-items-center mb-1">
+          <label class="form-label mb-0">Password</label>
+          <a href="#" class="small" style="color:var(--primary)">Forgot password?</a>
+        </div>
+        <div class="input-group">
+          <span class="input-group-text"><i class="fa-solid fa-lock"></i></span>
+          <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+          <button class="input-group-text bg-white border-start-0" type="button" onclick="togglePassword('password', this)">
+            <i class="fa-regular fa-eye"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="mb-3 d-flex align-items-center gap-2">
+        <input type="checkbox" class="form-check-input m-0" id="remember">
+        <label class="form-check-label small" for="remember">Keep me signed in for 30 days</label>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 btn-lg">
+        <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>Sign In
+      </button>
+    </form>
+
+    <p class="text-center mt-3 small" style="color:var(--gray-500)">
+      Don't have an account?
+      <a href="register.html" style="color:var(--primary);font-weight:600">Create one free</a>
+    </p>
+
+    <!-- Demo Quick Login -->
+    <div class="mt-4 p-3 rounded-3" style="background:var(--gray-100);font-size:.8rem">
+      <p class="fw-600 mb-2 text-dark"><i class="fa-solid fa-bolt me-1" style="color:var(--secondary)"></i> Quick Demo Login</p>
+      <div class="d-flex gap-2 flex-wrap">
+        <button onclick="Auth.quickLogin('customer')" class="btn btn-sm flex-fill" style="background:#e0e7ff;color:#4f46e5;border:none;font-family:var(--font);font-size:.78rem;font-weight:600">
+          <i class="fa-solid fa-user me-1"></i>Customer
+        </button>
+        <button onclick="Auth.quickLogin('seller')" class="btn btn-sm flex-fill" style="background:#fef3c7;color:#92400e;border:none;font-family:var(--font);font-size:.78rem;font-weight:600">
+          <i class="fa-solid fa-store me-1"></i>Seller
+        </button>
+        <button onclick="Auth.quickLogin('admin')" class="btn btn-sm flex-fill" style="background:#fee2e2;color:#b91c1c;border:none;font-family:var(--font);font-size:.78rem;font-weight:600">
+          <i class="fa-solid fa-shield-halved me-1"></i>Admin
+        </button>
+      </div>
+      <div class="mt-2" style="color:var(--gray-500)">All passwords: <strong>pass123</strong></div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+function togglePassword(id, btn) {
+  const input = document.getElementById(id);
+  const icon = btn.querySelector('i');
+  if (input.type === 'password') {
+    input.type = 'text';
+    icon.className = 'fa-regular fa-eye-slash';
+  } else {
+    input.type = 'password';
+    icon.className = 'fa-regular fa-eye';
+  }
+}
+
+async function handleLogin(e) {
+  e.preventDefault();
+  const form = e.target;
+  const email = form.querySelector('input[type=email]').value.trim();
+  const password = form.querySelector('input[type=password]').value;
+  const btn = form.querySelector('button[type=submit]');
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Signing in...';
+  btn.disabled = true;
+
+  const role = await Auth.apiLogin(email, password);
+  if (!role) {
+    btn.innerHTML = '<i class="fa-solid fa-arrow-right-to-bracket me-2"></i>Sign In';
+    btn.disabled = false;
+    Toast.show('Invalid email or password. Try a demo account below.', 'error');
+    return;
+  }
+  window.location.href = Auth.DASHBOARDS[role];
+}
+</script>
+</body>
+</html>

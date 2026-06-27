@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Account — EcomX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <script>(function(){var u=null;try{u=JSON.parse(localStorage.getItem('ecomx_user')||'null');}catch(e){}if(!u){window.location.replace('login.html');}})();</script>
+  <style>
+    .acc-tab-btn{background:none;border:none;padding:.55rem 1.2rem;border-radius:50px;font-family:var(--font);font-size:.875rem;font-weight:500;color:var(--gray-500);cursor:pointer;transition:all .2s;white-space:nowrap}
+    .acc-tab-btn:hover{background:var(--gray-100);color:var(--dark)}
+    .acc-tab-btn.active{background:var(--primary);color:#fff}
+    .acc-tab-btn i{font-size:.8rem}
+    .sp-card{border-radius:14px;overflow:hidden;border:1.5px solid var(--border);transition:all .2s;background:#fff}
+    .sp-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.1);transform:translateY(-2px)}
+    .img-thumb{width:76px;height:76px;border-radius:10px;object-fit:cover;border:2px solid var(--border)}
+    .order-item{border-left:4px solid var(--primary);border-radius:0 12px 12px 0}
+    .img-upload-slot{position:relative;aspect-ratio:1;border:2px dashed var(--border);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;overflow:hidden;background:#fafafa;transition:border-color .2s,background .2s}
+    .img-upload-slot:hover{border-color:var(--primary);background:var(--primary-light)}
+    .img-upload-slot:hover i{color:var(--primary)!important}
+    .img-slot-clear{position:absolute;top:5px;right:5px;background:rgba(0,0,0,.6);color:#fff;border:none;border-radius:50%;width:22px;height:22px;font-size:.8rem;cursor:pointer;line-height:1;display:flex;align-items:center;justify-content:center;z-index:2;transition:background .15s}
+    .img-slot-clear:hover{background:var(--danger)}
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-main navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Ecom<span>X</span></a>
+    <div class="navbar-search d-none d-lg-block mx-3">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" placeholder="Search products, brands, categories...">
+    </div>
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="products.html">Products</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Categories</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="products.html?cat=electronics"><i class="fa-solid fa-mobile-screen-button me-2 text-primary"></i>Electronics</a></li>
+            <li><a class="dropdown-item" href="products.html?cat=fashion"><i class="fa-solid fa-shirt me-2 text-warning"></i>Fashion</a></li>
+            <li><a class="dropdown-item" href="products.html?cat=home"><i class="fa-solid fa-house me-2 text-success"></i>Home & Garden</a></li>
+            <li><a class="dropdown-item" href="products.html?cat=beauty"><i class="fa-solid fa-spa me-2 text-danger"></i>Beauty</a></li>
+            <li><a class="dropdown-item" href="products.html?cat=sports"><i class="fa-solid fa-dumbbell me-2 text-info"></i>Sports</a></li>
+          </ul>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+        <a href="cart.html" class="cart-btn position-relative" title="Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cart-count" style="display:none">0</span>
+        </a>
+        <div class="dropdown" id="nav-user-menu" style="display:none">
+          <button class="btn btn-sm d-flex align-items-center gap-2 px-3" style="background:var(--primary);color:#fff;border-radius:50px;font-family:var(--font)" data-bs-toggle="dropdown">
+            <span class="nav-user-initials fw-bold"></span>
+            <span class="nav-user-name"></span>
+            <i class="fa-solid fa-chevron-down small ms-1"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end nav-user-dropdown shadow" style="min-width:220px"></ul>
+        </div>
+        <a href="login.html" class="btn btn-secondary-outline btn-sm" id="nav-login-btn">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm" id="nav-register-btn">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- PROFILE HERO -->
+<div style="background:linear-gradient(135deg,var(--primary) 0%,#3730a3 100%);padding:2.5rem 0;color:#fff">
+  <div class="container">
+    <div class="d-flex align-items-center gap-4 flex-wrap">
+      <div id="acc-avatar" style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;color:#fff;border:3px solid rgba(255,255,255,.35);flex-shrink:0">?</div>
+      <div>
+        <h2 id="acc-name" style="font-size:1.5rem;font-weight:700;margin:0;color:#fff">Loading…</h2>
+        <div class="d-flex align-items-center gap-2 mt-2 flex-wrap">
+          <span id="acc-role-badge" style="background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.35);border-radius:50px;padding:.2rem .85rem;font-size:.78rem;font-weight:600">Member</span>
+          <span id="acc-email" style="color:rgba(255,255,255,.7);font-size:.82rem"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ACCOUNT BODY -->
+<div class="container py-4">
+  <!-- Tabs -->
+  <div style="overflow-x:auto;scrollbar-width:none;padding-bottom:4px" class="mb-4">
+    <ul class="nav gap-1 flex-nowrap" id="acc-tabs" style="min-width:max-content"></ul>
+  </div>
+  <!-- Content -->
+  <div id="acc-content"></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+/* ───────────────────────────────────────
+   Account Page
+─────────────────────────────────────── */
+function initAccountPage() {
+  var u = Auth.get();
+  if (!u) return window.location.href = 'login.html';
+  if (u.role === 'admin') return window.location.href = 'admin/dashboard.html';
+
+  document.getElementById('acc-avatar').textContent = u.initials || u.name.slice(0,2).toUpperCase();
+  document.getElementById('acc-name').textContent   = u.name;
+  document.getElementById('acc-email').textContent  = u.email || '';
+  var badge = document.getElementById('acc-role-badge');
+  if (u.role === 'seller') {
+    badge.textContent = 'Verified Seller';
+    badge.style.background = 'rgba(245,158,11,.35)';
+    badge.style.border = '1px solid rgba(245,158,11,.5)';
+  } else {
+    badge.textContent = 'Customer Account';
+  }
+
+  var tabs = u.role === 'seller'
+    ? [
+        {id:'my-products', label:'My Products',  icon:'fa-box-open'},
+        {id:'add-product', label:'Add Product',   icon:'fa-plus-circle'},
+        {id:'profile',     label:'Profile',       icon:'fa-user-pen'},
+      ]
+    : [
+        {id:'orders',    label:'My Orders',  icon:'fa-truck'},
+        {id:'wishlist',  label:'Wishlist',   icon:'fa-heart'},
+        {id:'profile',   label:'Profile',    icon:'fa-user-pen'},
+      ];
+
+  document.getElementById('acc-tabs').innerHTML = tabs.map(function(t, i) {
+    return '<li class="nav-item"><button class="acc-tab-btn' + (i===0?' active':'') + '" data-tab="' + t.id + '" onclick="showTab(\'' + t.id + '\')"><i class="fa-solid ' + t.icon + ' me-2"></i>' + t.label + '</button></li>';
+  }).join('');
+
+  // If URL has #add, jump directly to Add Product tab
+  if (window.location.hash === '#add' && u.role === 'seller') {
+    showTab('add-product');
+  } else {
+    showTab(tabs[0].id);
+  }
+}
+
+function showTab(id) {
+  document.querySelectorAll('.acc-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  var btn = document.querySelector('[data-tab="' + id + '"]');
+  if (btn) btn.classList.add('active');
+  var u  = Auth.get();
+  var el = document.getElementById('acc-content');
+  var fns = {'my-products':renderMyProducts,'add-product':renderAddProduct,'orders':renderMyOrders,'wishlist':renderWishlist,'profile':renderProfile};
+  if (fns[id]) fns[id](u, el);
+}
+
+/* ── SELLER: My Products ─────────────── */
+var _myProducts = []; // cache for edit lookups
+
+async function renderMyProducts(u, el) {
+  el.innerHTML = '<div class="text-center py-5"><i class="fa-solid fa-spinner fa-spin fa-2x" style="color:var(--primary)"></i></div>';
+
+  var products = [];
+  var usingApi = false;
+  if (Auth.token()) {
+    try {
+      var data = await api.get('/api/products/my');
+      if (data.products) {
+        products = data.products.map(normalizeProduct);
+        usingApi = true;
+      }
+    } catch(e) {}
+  }
+  if (!usingApi) {
+    products = SellerProducts.getByUser(u.email);
+  }
+  _myProducts = products;
+
+  if (!products.length) {
+    el.innerHTML = '<div class="text-center py-5"><div style="font-size:3.5rem;margin-bottom:1rem">📦</div><h5 class="fw-600">No products listed yet</h5><p class="text-muted mb-3">Add your first product and start selling on EcomX</p><button class="btn btn-primary" onclick="showTab(\'add-product\')"><i class="fa-solid fa-plus me-2"></i>Add Your First Product</button></div>';
+    return;
+  }
+  el.innerHTML = '<div class="d-flex justify-content-between align-items-center mb-4"><h5 class="fw-700 m-0">' + products.length + ' Product' + (products.length!==1?'s':'') + ' Listed</h5><button class="btn btn-primary btn-sm px-3" onclick="showTab(\'add-product\')"><i class="fa-solid fa-plus me-1"></i>Add Product</button></div>'
+    + '<div class="row g-3">'
+    + products.map(function(p) {
+        var img = (p.imgs||p.images||[])[0] || '';
+        return '<div class="col-6 col-md-4 col-lg-3" id="sp-card-' + p.id + '"><div class="sp-card">'
+          + (img ? '<img src="' + img + '" style="width:100%;height:160px;object-fit:cover">' : '<div style="width:100%;height:160px;background:var(--gray-100);display:flex;align-items:center;justify-content:center"><i class="fa-solid fa-image fa-2x" style="color:var(--gray-300)"></i></div>')
+          + '<div class="p-3"><div class="fw-600 small mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.4">' + p.name + '</div>'
+          + '<div class="fw-700 mb-1" style="color:var(--primary)">$' + parseFloat(p.price).toFixed(2) + '</div>'
+          + '<div class="small text-muted mb-2">Stock: ' + p.stock + ' · ' + p.category + '</div>'
+          + '<div class="d-flex gap-1"><button class="btn btn-sm flex-fill" style="border:1.5px solid var(--border);font-size:.75rem;font-family:var(--font)" onclick="showEditProduct(\'' + p.id + '\')"><i class="fa-solid fa-pen me-1"></i>Edit</button>'
+          + '<button class="btn btn-sm" style="background:var(--danger-light);color:var(--danger);font-size:.75rem;border:none" onclick="deleteSellerProduct(\'' + p.id + '\')"><i class="fa-solid fa-trash"></i></button></div>'
+          + '</div></div></div>';
+      }).join('')
+    + '</div>';
+}
+
+/* ── SELLER: Add / Edit Product ─────── */
+function renderAddProduct(u, el, editData) {
+  var d = editData || {};
+  var cats = ['Electronics','Fashion','Home & Garden','Beauty','Sports','Toys & Kids'];
+  var imgs = d.imgs || d.images || [];
+
+  el.innerHTML = '<div class="card border-0 shadow-sm" style="max-width:800px">'
+    + '<div class="card-body p-4">'
+    + '<h5 class="fw-700 mb-4"><i class="fa-solid fa-' + (editData?'pen':'plus-circle') + ' me-2" style="color:var(--primary)"></i>' + (editData?'Edit Product':'List a New Product') + '</h5>'
+    + '<form id="product-form" onsubmit="submitSellerProduct(event,\'' + (d.id||'') + '\')">'
+    + '<div class="row g-3">'
+
+    + '<div class="col-12"><label class="form-label fw-500">Product Name <span class="text-danger">*</span></label>'
+    + '<input type="text" class="form-control" id="pf-name" placeholder="e.g. Premium Leather Wallet" value="' + (d.name||'') + '" required></div>'
+
+    + '<div class="col-md-6"><label class="form-label fw-500">Category <span class="text-danger">*</span></label>'
+    + '<select class="form-select" id="pf-cat" required><option value="">Select Category</option>'
+    + cats.map(function(c){ return '<option value="'+c+'"'+(d.category===c?' selected':'')+'>'+c+'</option>'; }).join('')
+    + '</select></div>'
+    + '<div class="col-md-6"><label class="form-label fw-500">Subcategory</label>'
+    + '<input type="text" class="form-control" id="pf-subcat" placeholder="e.g. Wallets & Cardholders" value="'+(d.subcat||'')+'"></div>'
+
+    + '<div class="col-md-4"><label class="form-label fw-500">Brand</label>'
+    + '<input type="text" class="form-control" id="pf-brand" placeholder="Brand name" value="'+(d.brand||'')+'"></div>'
+    + '<div class="col-md-4"><label class="form-label fw-500">Price ($) <span class="text-danger">*</span></label>'
+    + '<input type="number" class="form-control" id="pf-price" min="0.01" step="0.01" placeholder="29.99" value="'+(d.price||'')+'" required></div>'
+    + '<div class="col-md-4"><label class="form-label fw-500">Original Price ($) <span class="text-muted fw-400" style="font-size:.8rem">for sale badge</span></label>'
+    + '<input type="number" class="form-control" id="pf-original" min="0.01" step="0.01" placeholder="39.99" value="'+(d.original||'')+'"></div>'
+
+    + '<div class="col-md-6"><label class="form-label fw-500">Stock Quantity <span class="text-danger">*</span></label>'
+    + '<input type="number" class="form-control" id="pf-stock" min="0" placeholder="100" value="'+(d.stock||'')+'" required></div>'
+    + '<div class="col-md-6"><label class="form-label fw-500">Color / Variant</label>'
+    + '<input type="text" class="form-control" id="pf-color" placeholder="e.g. Black, Red, Blue" value="'+(d.color||'')+'"></div>'
+
+    + '<div class="col-12"><label class="form-label fw-500">Product Description <span class="text-danger">*</span></label>'
+    + '<textarea class="form-control" id="pf-desc" rows="4" placeholder="Describe your product — features, specifications, what\'s included..." required>'+(d.desc||'')+'</textarea></div>'
+
+    + '<div class="col-12">'
+    + '<label class="form-label fw-500">Product Images <span class="text-muted fw-400" style="font-size:.8rem">Upload files or paste URLs — first image is the main photo</span></label>'
+    + '<div class="row g-2">'
+    + [0,1,2,3].map(function(i){
+        var val = imgs[i]||'';
+        var slotLabel = i===0 ? 'Main Photo' : 'Photo '+(i+1);
+        var slotInner = val
+          ? '<img src="'+val+'" style="width:100%;height:100%;object-fit:cover;border-radius:10px">'
+            + '<button type="button" class="img-slot-clear" onclick="event.stopPropagation();clearImgSlot('+i+')" title="Remove">×</button>'
+          : '<i class="fa-solid fa-camera" style="font-size:1.6rem;color:var(--gray-300)"></i>'
+            + '<span style="font-size:.72rem;color:var(--gray-400);margin-top:4px">'+slotLabel+'</span>'
+            + '<span style="font-size:.65rem;color:var(--gray-300)">Click to upload</span>';
+        return '<div class="col-6 col-sm-3">'
+          + '<div class="img-upload-slot" id="img-slot-'+i+'" onclick="triggerImgSlot('+i+')" title="Click to upload or paste URL below">'
+          + slotInner
+          + '</div>'
+          + '<input type="file" id="img-file-'+i+'" accept="image/*" style="display:none" onchange="uploadImgFile('+i+',this)">'
+          + '<input type="text" class="img-url-input form-control form-control-sm mt-1" id="img-url-'+i+'" placeholder="or paste image URL" value="'+val+'" oninput="urlImgSlot('+i+',this.value)" style="font-size:.72rem;padding:.25rem .5rem">'
+          + '</div>';
+      }).join('')
+    + '</div>'
+    + '<div id="img-upload-msg" class="mt-2" style="display:none"><small><i class="fa-solid fa-spinner fa-spin me-1" style="color:var(--primary)"></i>Uploading image…</small></div>'
+    + '</div>'
+
+    + '<div class="col-12 pt-2 d-flex gap-2 flex-wrap">'
+    + '<button type="submit" class="btn btn-primary px-4"><i class="fa-solid fa-'+(editData?'check':'cloud-arrow-up')+' me-2"></i>'+(editData?'Save Changes':'List Product')+'</button>'
+    + (editData ? '<button type="button" class="btn btn-sm" style="border:1.5px solid var(--border);font-family:var(--font)" onclick="showTab(\'my-products\')">Cancel</button>' : '')
+    + '</div></div></form></div></div>';
+}
+
+function updateImgPreviews() {} // kept for compatibility
+
+function triggerImgSlot(i) {
+  document.getElementById('img-file-' + i).click();
+}
+
+async function uploadImgFile(i, input) {
+  var file = input.files[0];
+  if (!file) return;
+  var msg = document.getElementById('img-upload-msg');
+  if (msg) msg.style.display = '';
+  var token = Auth.token();
+  var fd = new FormData();
+  fd.append('image', file);
+  try {
+    var r = await fetch(api.BASE + '/api/upload/', {
+      method: 'POST',
+      headers: token ? { 'Authorization': 'Bearer ' + token } : {},
+      body: fd
+    });
+    var d = await r.json();
+    if (r.ok && d.url) {
+      var urlInput = document.getElementById('img-url-' + i);
+      if (urlInput) urlInput.value = d.url;
+      urlImgSlot(i, d.url);
+      Toast.show('Image uploaded!', 'success');
+    } else {
+      Toast.show(d.error || 'Upload failed.', 'error');
+    }
+  } catch(e) {
+    Toast.show('Upload failed — check your connection.', 'error');
+  } finally {
+    if (msg) msg.style.display = 'none';
+    input.value = '';
+  }
+}
+
+function urlImgSlot(i, url) {
+  var slot = document.getElementById('img-slot-' + i);
+  if (!slot) return;
+  url = (url || '').trim();
+  var label = i === 0 ? 'Main Photo' : 'Photo ' + (i + 1);
+  if (url) {
+    slot.innerHTML = '<img src="' + url + '" style="width:100%;height:100%;object-fit:cover;border-radius:10px" onerror="this.style.opacity=\'.3\'" onload="this.style.opacity=\'1\'">'
+      + '<button type="button" class="img-slot-clear" onclick="event.stopPropagation();clearImgSlot(' + i + ')" title="Remove">×</button>';
+  } else {
+    slot.innerHTML = '<i class="fa-solid fa-camera" style="font-size:1.6rem;color:var(--gray-300)"></i>'
+      + '<span style="font-size:.72rem;color:var(--gray-400);margin-top:4px">' + label + '</span>'
+      + '<span style="font-size:.65rem;color:var(--gray-300)">Click to upload</span>';
+  }
+}
+
+function clearImgSlot(i) {
+  var urlInput = document.getElementById('img-url-' + i);
+  if (urlInput) urlInput.value = '';
+  urlImgSlot(i, '');
+}
+
+async function submitSellerProduct(e, editId) {
+  e.preventDefault();
+  var u    = Auth.get();
+  var btn  = e.target.querySelector('button[type=submit]');
+  var imgs = Array.from(document.querySelectorAll('.img-url-input')).map(function(i){ return i.value.trim(); }).filter(Boolean);
+  var name     = document.getElementById('pf-name').value.trim();
+  var category = document.getElementById('pf-cat').value;
+  var subcat   = document.getElementById('pf-subcat').value.trim() || category;
+  var brand    = document.getElementById('pf-brand').value.trim() || (u.store_name || u.name);
+  var price    = parseFloat(document.getElementById('pf-price').value);
+  var original = parseFloat(document.getElementById('pf-original').value) || null;
+  var stock    = parseInt(document.getElementById('pf-stock').value);
+  var color    = document.getElementById('pf-color').value.trim() || 'N/A';
+  var desc     = document.getElementById('pf-desc').value.trim();
+  var discount = original ? Math.round((1 - price / original) * 100) : 0;
+
+  if (!imgs.length) {
+    var firstSlot = document.getElementById('img-slot-0');
+    if (firstSlot) {
+      firstSlot.style.borderColor = 'var(--danger,#ef4444)';
+      firstSlot.style.background  = '#fff5f5';
+      setTimeout(function(){ firstSlot.style.borderColor = ''; firstSlot.style.background = ''; }, 3000);
+    }
+    Toast.show('Please add at least one product image before listing.', 'error');
+    return;
+  }
+
+  var payload = {
+    name:name, title:name, category:category, subcat:subcat, brand:brand,
+    price:price, original:original, stock:stock, color:color, desc:desc,
+    discount:discount,
+    imgs:imgs,
+    badgeLabel: discount>=5 ? '-'+discount+'%' : null,
+    badgeCls:   discount>=5 ? 'badge-sale'     : null,
+  };
+
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-2"></i>Saving…';
+
+  // ── Try backend API ──
+  if (Auth.token()) {
+    try {
+      var res = editId
+        ? await api.put('/api/products/' + editId, payload)
+        : await api.post('/api/products/', payload);
+      if (res.ok) {
+        Toast.show(editId ? 'Product updated!' : 'Product listed! Now live in the store.', 'success');
+        showTab('my-products');
+        return;
+      }
+      Toast.show((res.data && res.data.error) || 'Could not save product.', 'error');
+      btn.disabled = false;
+      btn.innerHTML = editId ? '<i class="fa-solid fa-check me-2"></i>Save Changes' : '<i class="fa-solid fa-cloud-arrow-up me-2"></i>List Product';
+      return;
+    } catch(err) {
+      // Backend down — fall through to localStorage
+    }
+  }
+
+  // ── Fallback: localStorage ──
+  var localData = Object.assign({}, payload, {
+    images:payload.imgs, seller:u.store_name||u.name,
+    sellerEmail:u.email, sellerPhone:u.phone||'', sellerWA:u.whatsapp||'',
+    rating:0, reviews:0, sold:0,
+  });
+  if (editId) { SellerProducts.update(editId, localData); }
+  else        { SellerProducts.add(localData); }
+  Toast.show(editId ? 'Product updated! (offline)' : 'Product listed! (offline)', 'success');
+  showTab('my-products');
+}
+
+function showEditProduct(id) {
+  // Look up in API cache first, then localStorage
+  var p = _myProducts.find(function(x){ return String(x.id) === String(id); })
+       || SellerProducts.find(id);
+  if (!p) return;
+  document.querySelectorAll('.acc-tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  var btn = document.querySelector('[data-tab="add-product"]');
+  if (btn) btn.classList.add('active');
+  renderAddProduct(Auth.get(), document.getElementById('acc-content'), p);
+}
+
+async function deleteSellerProduct(id) {
+  if (!confirm('Remove this product from your listings?')) return;
+
+  // Remove card from DOM immediately
+  var card = document.getElementById('sp-card-' + id);
+  if (card) card.remove();
+
+  // Update local cache and count display
+  _myProducts = _myProducts.filter(function(p) { return String(p.id) !== String(id); });
+  var countEl = document.querySelector('#acc-content .fw-700.m-0');
+  if (countEl) countEl.textContent = _myProducts.length + ' Product' + (_myProducts.length !== 1 ? 's' : '') + ' Listed';
+
+  // Show empty state if no products remain
+  if (!_myProducts.length) {
+    var content = document.getElementById('acc-content');
+    if (content) content.innerHTML = '<div class="text-center py-5"><div style="font-size:3.5rem;margin-bottom:1rem">📦</div><h5 class="fw-600">No products listed yet</h5><p class="text-muted mb-3">Add your first product and start selling on EcomX</p><button class="btn btn-primary" onclick="showTab(\'add-product\')"><i class="fa-solid fa-plus me-2"></i>Add Your First Product</button></div>';
+  }
+
+  Toast.show('Product removed.', 'success');
+
+  // Persist deletion in background
+  if (Auth.token()) {
+    try { await api.del('/api/products/' + id); } catch(e) {}
+  } else {
+    SellerProducts.remove(id);
+  }
+}
+
+/* ── CUSTOMER: My Orders ─────────────── */
+async function renderMyOrders(u, el) {
+  el.innerHTML = '<div class="text-center py-5"><i class="fa-solid fa-spinner fa-spin fa-2x" style="color:var(--primary)"></i></div>';
+
+  var orders = [];
+  var fromApi = false;
+  if (Auth.token()) {
+    try {
+      var data = await api.get('/api/orders/');
+      if (data.orders) { orders = data.orders; fromApi = true; }
+    } catch(e) {}
+  }
+  if (!fromApi) {
+    var local = JSON.parse(localStorage.getItem('ecomx_orders') || '[]');
+    orders = local.filter(function(o) { return !o.customerEmail || o.customerEmail === u.email; })
+      .map(function(o) { return { order_number: o.id, status: o.status || 'processing', created_at: o.date, total: o.total, items: o.items || [] }; });
+  }
+
+  if (!orders.length) {
+    el.innerHTML = '<div class="text-center py-5"><div style="font-size:3.5rem;margin-bottom:1rem">🛍️</div><h5 class="fw-600">No orders yet</h5><p class="text-muted mb-3">Your order history will appear here once you place an order</p><a href="products.html" class="btn btn-primary"><i class="fa-solid fa-store me-2"></i>Browse Products</a></div>';
+    return;
+  }
+
+  var STATUS_COLOR = { processing:'var(--warning)', shipped:'var(--info)', delivered:'var(--success)', cancelled:'var(--danger)', pending:'var(--gray-400)' };
+  var STATUS_ICON  = { processing:'fa-gear', shipped:'fa-truck', delivered:'fa-circle-check', cancelled:'fa-times-circle', pending:'fa-clock' };
+
+  el.innerHTML = '<h5 class="fw-700 mb-3">' + orders.length + ' Order' + (orders.length !== 1 ? 's' : '') + '</h5>'
+    + '<div class="d-flex flex-column gap-3">'
+    + orders.map(function(o) {
+        var color = STATUS_COLOR[o.status] || 'var(--primary)';
+        var icon  = STATUS_ICON[o.status]  || 'fa-box';
+        var items = o.items || [];
+        var date  = o.created_at ? o.created_at.split('T')[0] : 'Recent';
+        var num   = o.order_number || o.id || '—';
+        return '<div class="card border-0 shadow-sm" style="border-left:4px solid ' + color + '!important;border-radius:0 12px 12px 0">'
+          + '<div class="card-body p-3">'
+          + '<div class="d-flex justify-content-between align-items-start flex-wrap gap-2 mb-2">'
+          + '<div>'
+          + '<div class="fw-700">' + num + '</div>'
+          + '<div class="small text-muted">' + date + '</div>'
+          + '</div>'
+          + '<span style="background:' + color + '18;color:' + color + ';border:1px solid ' + color + '30;border-radius:50px;padding:.2rem .85rem;font-size:.75rem;font-weight:600">'
+          + '<i class="fa-solid ' + icon + ' me-1"></i>' + (o.status || 'processing') + '</span>'
+          + '</div>'
+          + (items.length ? '<div class="d-flex gap-2 flex-wrap mb-2">'
+              + items.slice(0, 3).map(function(it) {
+                  var name = it.product_name || it.name || 'Item';
+                  var qty  = it.quantity || it.qty || 1;
+                  return '<div class="small py-1 px-2" style="background:var(--gray-100);border-radius:8px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">'
+                    + name + ' \xd7' + qty + '</div>';
+                }).join('')
+              + (items.length > 3 ? '<div class="small py-1 px-2" style="background:var(--gray-100);border-radius:8px">+' + (items.length - 3) + ' more</div>' : '')
+              + '</div>' : '')
+          + '<div class="d-flex align-items-center justify-content-between flex-wrap gap-2">'
+          + '<div class="small text-muted"><i class="fa-solid fa-box me-1"></i>' + items.length + ' item' + (items.length !== 1 ? 's' : '') + '</div>'
+          + '<div class="d-flex align-items-center gap-2">'
+          + '<a href="track-order.html?order=' + encodeURIComponent(num) + '" class="btn btn-sm" style="background:var(--primary-light);color:var(--primary);border:none;font-size:.75rem;border-radius:8px;font-weight:600"><i class="fa-solid fa-location-dot me-1"></i>Track</a>'
+          + '<div class="fw-700" style="color:var(--primary)">$' + parseFloat(o.total || 0).toFixed(2) + '</div>'
+          + '</div>'
+          + '</div>'
+          + '</div></div>';
+      }).join('')
+    + '</div>';
+}
+
+/* ── CUSTOMER: Wishlist ──────────────── */
+function renderWishlist(u, el) {
+  var wishlist = JSON.parse(localStorage.getItem('ecomx_wishlist')||'[]');
+  if (!wishlist.length) {
+    el.innerHTML = '<div class="text-center py-5"><div style="font-size:3.5rem;margin-bottom:1rem">❤️</div><h5 class="fw-600">Your wishlist is empty</h5><p class="text-muted mb-3">Heart any product to save it here for later</p><a href="products.html" class="btn btn-primary">Discover Products</a></div>';
+    return;
+  }
+  el.innerHTML = '<h5 class="fw-700 mb-3">' + wishlist.length + ' Saved Item' + (wishlist.length!==1?'s':'') + '</h5>'
+    + '<div class="row g-3">'
+    + wishlist.map(function(p){
+        var img = (p.imgs||p.images||[])[0] || 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400';
+        var safeName = (p.name||'').replace(/'/g,"\\'");
+        return '<div class="col-6 col-md-4 col-lg-3"><div class="sp-card">'
+          + '<img src="'+img+'" style="width:100%;height:160px;object-fit:cover">'
+          + '<div class="p-3"><div class="fw-600 small mb-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">' + p.name + '</div>'
+          + '<div class="fw-700 mb-2" style="color:var(--primary)">$' + parseFloat(p.price||0).toFixed(2) + '</div>'
+          + '<div class="d-flex gap-1">'
+          + '<button class="btn btn-sm btn-primary flex-fill" style="font-size:.75rem" onclick="Cart.add({id:\''+p.id+'\',name:\''+safeName+'\',price:'+p.price+'});Toast.show(\'Added to cart!\',\'success\')"><i class="fa-solid fa-bag-shopping me-1"></i>Add to Cart</button>'
+          + '<button class="btn btn-sm" style="background:var(--danger-light);color:var(--danger);border:none;font-size:.75rem" onclick="removeWishlistItem(\''+p.id+'\')"><i class="fa-solid fa-trash"></i></button>'
+          + '</div></div></div></div>';
+      }).join('')
+    + '</div>';
+}
+
+function removeWishlistItem(id) {
+  var list = JSON.parse(localStorage.getItem('ecomx_wishlist')||'[]').filter(function(p){ return String(p.id)!==String(id); });
+  localStorage.setItem('ecomx_wishlist', JSON.stringify(list));
+  Toast.show('Removed from wishlist.', 'success');
+  renderWishlist(Auth.get(), document.getElementById('acc-content'));
+}
+
+/* ── PROFILE (both roles) ────────────── */
+function renderProfile(u, el) {
+  var isSeller = u.role === 'seller';
+  el.innerHTML = '<div class="card border-0 shadow-sm" style="max-width:560px">'
+    + '<div class="card-body p-4">'
+    + '<h5 class="fw-700 mb-4"><i class="fa-solid fa-user-pen me-2" style="color:var(--primary)"></i>Profile Information</h5>'
+    + '<form id="profile-form" onsubmit="saveProfile(event)">'
+    + '<div class="mb-3"><label class="form-label">Full Name</label>'
+    + '<input type="text" class="form-control" id="prof-name" value="'+(u.name||'')+'" required></div>'
+
+    + '<div class="mb-3"><label class="form-label">Email Address</label>'
+    + '<input type="email" class="form-control" value="'+(u.email||'')+'" readonly style="background:var(--gray-100);cursor:not-allowed"></div>'
+
+    + '<div class="mb-3"><label class="form-label">Phone Number '
+    + '<span class="text-muted" style="font-size:.8rem;font-weight:400">'+(isSeller?'(shown to buyers on your products)':'(for delivery contact)')+'</span></label>'
+    + '<div class="input-group"><span class="input-group-text"><i class="fa-solid fa-phone"></i></span>'
+    + '<input type="tel" class="form-control" id="prof-phone" placeholder="+92 300 0000000" value="'+(u.phone||'')+'"></div></div>'
+
+    + (isSeller ? '<div class="mb-3"><label class="form-label">Store Name</label>'
+    + '<div class="input-group"><span class="input-group-text"><i class="fa-solid fa-store"></i></span>'
+    + '<input type="text" class="form-control" id="prof-store" placeholder="My Awesome Store" value="'+(u.store_name||'')+'"></div></div>'
+
+    + '<div class="mb-3"><label class="form-label">WhatsApp Number <span class="text-muted" style="font-size:.8rem;font-weight:400">(buyers can message you directly)</span></label>'
+    + '<div class="input-group"><span class="input-group-text" style="background:#25d366;color:#fff;border-color:#25d366"><i class="fab fa-whatsapp"></i></span>'
+    + '<input type="tel" class="form-control" id="prof-wa" placeholder="+92 300 0000000" value="'+(u.whatsapp||'')+'"></div></div>' : '')
+
+    + '<div class="mb-4"><label class="form-label">Shipping Address</label>'
+    + '<textarea class="form-control" id="prof-address" rows="3" placeholder="123 Main St, City, State, ZIP">'+(u.address||'')+'</textarea></div>'
+
+    + '<button type="submit" class="btn btn-primary px-4"><i class="fa-solid fa-check me-2"></i>Save Changes</button>'
+    + '</form></div></div>';
+}
+
+async function saveProfile(e) {
+  e.preventDefault();
+  var u = Auth.get();
+  u.name    = document.getElementById('prof-name').value.trim() || u.name;
+  u.phone   = (document.getElementById('prof-phone') ? document.getElementById('prof-phone').value.trim() : '');
+  u.address = (document.getElementById('prof-address') ? document.getElementById('prof-address').value.trim() : '');
+  if (u.role === 'seller') {
+    u.store_name = document.getElementById('prof-store') ? document.getElementById('prof-store').value.trim() : '';
+    u.whatsapp   = document.getElementById('prof-wa')    ? document.getElementById('prof-wa').value.trim()    : '';
+  }
+  u.initials = u.name.split(' ').map(function(w){ return w[0]; }).slice(0,2).join('').toUpperCase();
+
+  // Try to sync to backend
+  if (Auth.token()) {
+    try {
+      await api.put('/api/auth/me', { name:u.name, phone:u.phone, whatsapp:u.whatsapp||'', store_name:u.store_name||'' });
+    } catch(err) {}
+  }
+
+  Auth._saveUser(u, Auth.token());
+  document.getElementById('acc-avatar').textContent = u.initials;
+  document.getElementById('acc-name').textContent   = u.name;
+  Auth.initUI();
+  Toast.show('Profile saved!', 'success');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  Auth.initUI();
+  Cart.updateBadge();
+  initAccountPage();
+});
+</script>
+</body>
+</html>

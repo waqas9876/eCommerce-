@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products — EcomX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-main navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Ecom<span>X</span></a>
+    <div class="navbar-search d-none d-lg-block mx-3">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="nav-search" placeholder="Search products, brands, categories...">
+    </div>
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link active" href="products.html">Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+        <li class="nav-item"><a class="nav-link" href="track-order.html">Track Order</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+        <a href="cart.html" class="cart-btn position-relative">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cart-count" style="display:none">0</span>
+        </a>
+        <!-- User menu (shown when logged in) -->
+        <div class="dropdown" id="nav-user-menu" style="display:none">
+          <button class="btn btn-sm d-flex align-items-center gap-2 px-3" style="background:var(--primary);color:#fff;border-radius:50px;font-family:var(--font)" data-bs-toggle="dropdown">
+            <span class="nav-user-initials fw-bold"></span>
+            <span class="nav-user-name"></span>
+            <i class="fa-solid fa-chevron-down small ms-1"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end nav-user-dropdown shadow" style="min-width:220px"></ul>
+        </div>
+        <!-- Auth buttons (shown when logged out) -->
+        <a href="login.html" class="btn btn-secondary-outline btn-sm" id="nav-login-btn">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm" id="nav-register-btn">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="container">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb mb-2">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active">Products</li>
+      </ol>
+    </nav>
+    <h1 class="page-hero-title">All Products</h1>
+    <p style="font-size:.875rem;opacity:.65;margin:0">Discover 50,000+ products from verified sellers</p>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="container py-4">
+  <div class="row g-4">
+
+    <!-- ── FILTER SIDEBAR ── -->
+    <div class="col-lg-3">
+      <div class="filter-sidebar">
+
+        <!-- Search -->
+        <div class="filter-section">
+          <div class="position-relative">
+            <i class="fa-solid fa-magnifying-glass position-absolute" style="left:.75rem;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:.8rem"></i>
+            <input type="text" id="filter-search" class="form-control" style="padding-left:2.25rem;font-size:.875rem" placeholder="Search products...">
+          </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="filter-section">
+          <div class="filter-title">Categories <i class="fa-solid fa-chevron-down" style="font-size:.7rem"></i></div>
+          <div class="filter-check"><input type="checkbox" checked id="cat-all"><label for="cat-all">All Categories</label><span class="count">50,000</span></div>
+          <div class="filter-check"><input type="checkbox" id="cat-elec"><label for="cat-elec">Electronics</label><span class="count">2,400</span></div>
+          <div class="filter-check"><input type="checkbox" id="cat-fashion"><label for="cat-fashion">Fashion</label><span class="count">8,100</span></div>
+          <div class="filter-check"><input type="checkbox" id="cat-home"><label for="cat-home">Home & Garden</label><span class="count">3,600</span></div>
+          <div class="filter-check"><input type="checkbox" id="cat-beauty"><label for="cat-beauty">Beauty</label><span class="count">1,800</span></div>
+          <div class="filter-check"><input type="checkbox" id="cat-sports"><label for="cat-sports">Sports</label><span class="count">1,200</span></div>
+          <div class="filter-check"><input type="checkbox" id="cat-toys"><label for="cat-toys">Toys & Kids</label><span class="count">950</span></div>
+        </div>
+
+        <!-- Price Range -->
+        <div class="filter-section">
+          <div class="filter-title">Price Range <i class="fa-solid fa-chevron-down" style="font-size:.7rem"></i></div>
+          <div class="price-range-wrap">
+            <input type="range" id="price-range" class="form-range w-100" min="0" max="5000" value="5000">
+            <div class="price-range-labels">
+              <span>$0</span>
+              <span id="price-display">$5000</span>
+            </div>
+          </div>
+          <div class="d-flex gap-2 mt-2">
+            <input type="number" id="price-min" class="form-control form-control-sm" placeholder="Min $" value="0">
+            <input type="number" id="price-max" class="form-control form-control-sm" placeholder="Max $" value="500">
+          </div>
+        </div>
+
+        <!-- Rating -->
+        <div class="filter-section">
+          <div class="filter-title">Rating</div>
+          <div class="filter-check"><input type="radio" name="rating" id="r5"><label for="r5"><span style="color:var(--secondary)">★★★★★</span> 5.0</label></div>
+          <div class="filter-check"><input type="radio" name="rating" id="r4"><label for="r4"><span style="color:var(--secondary)">★★★★</span>☆ 4.0+</label></div>
+          <div class="filter-check"><input type="radio" name="rating" id="r3"><label for="r3"><span style="color:var(--secondary)">★★★</span>☆☆ 3.0+</label></div>
+          <div class="filter-check"><input type="radio" name="rating" id="r2"><label for="r2"><span style="color:var(--secondary)">★★</span>☆☆☆ 2.0+</label></div>
+        </div>
+
+        <!-- Availability -->
+        <div class="filter-section">
+          <div class="filter-title">Availability</div>
+          <div class="filter-check"><input type="checkbox" id="in-stock" checked><label for="in-stock">In Stock</label></div>
+          <div class="filter-check"><input type="checkbox" id="on-sale"><label for="on-sale">On Sale</label></div>
+          <div class="filter-check"><input type="checkbox" id="free-ship"><label for="free-ship">Free Shipping</label></div>
+        </div>
+
+        <button id="btn-apply" class="btn btn-primary w-100 btn-sm mb-2">Apply Filters</button>
+        <button id="btn-clear" class="btn btn-sm w-100" style="border:1.5px solid var(--border);color:var(--gray-500)">Clear All</button>
+      </div>
+    </div>
+
+    <!-- ── PRODUCTS GRID ── -->
+    <div class="col-lg-9">
+
+      <!-- Sort Bar -->
+      <div class="sort-bar">
+        <div class="results-text">Showing <span>1–24</span> of <span>50,000</span> results</div>
+        <div class="d-flex align-items-center gap-3 flex-wrap">
+          <div class="d-flex align-items-center gap-2">
+            <span style="font-size:.8rem;color:var(--gray-500)">Sort:</span>
+            <select class="sort-select">
+              <option>Best Match</option>
+              <option>Price: Low to High</option>
+              <option>Price: High to Low</option>
+              <option>Newest</option>
+              <option>Best Rated</option>
+              <option>Most Popular</option>
+            </select>
+          </div>
+          <div class="view-toggle">
+            <button class="view-btn active" data-view="grid" title="Grid view"><i class="fa-solid fa-grip"></i></button>
+            <button class="view-btn" data-view="list" title="List view"><i class="fa-solid fa-list"></i></button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Active Filters Tags -->
+      <div id="active-filters" class="d-flex gap-2 mb-3 flex-wrap">
+        <span class="badge rounded-pill d-flex align-items-center gap-1" style="background:var(--primary-light);color:var(--primary);font-size:.75rem;padding:.35rem .75rem;font-weight:500">
+          Rating: 4.0+ <button onclick="this.parentElement.remove()" style="background:none;border:none;color:inherit;cursor:pointer;font-size:.8rem;padding:0;margin:0;line-height:1">✕</button>
+        </span>
+        <span class="badge rounded-pill d-flex align-items-center gap-1" style="background:var(--primary-light);color:var(--primary);font-size:.75rem;padding:.35rem .75rem;font-weight:500">
+          In Stock <button onclick="this.parentElement.remove()" style="background:none;border:none;color:inherit;cursor:pointer;font-size:.8rem;padding:0;margin:0;line-height:1">✕</button>
+        </span>
+      </div>
+
+      <!-- Products -->
+      <div class="row g-3 row-cols-2 row-cols-md-3 row-cols-lg-3" id="products-grid">
+
+
+      </div>
+
+      <!-- Pagination -->
+      <div class="d-flex justify-content-between align-items-center mt-4 flex-wrap gap-3">
+        <p class="text-muted small mb-0">Showing 1–12 of 50,000 products</p>
+        <nav>
+          <ul class="pagination pagination-sm mb-0">
+            <li class="page-item disabled"><a class="page-link" href="#">‹</a></li>
+            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">…</a></li>
+            <li class="page-item"><a class="page-link" href="#">416</a></li>
+            <li class="page-item"><a class="page-link" href="#">›</a></li>
+          </ul>
+        </nav>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER (minimal) -->
+<footer class="footer mt-5">
+  <div class="footer-bottom" style="border-top:none;padding:1.5rem 0">
+    <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+      <a href="index.html" class="footer-logo" style="font-size:1.2rem">Ecom<span>X</span></a>
+      <p style="font-size:.8rem;color:rgba(255,255,255,.35);margin:0">&copy; 2026 EcomX. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

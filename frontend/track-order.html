@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Order — EcomX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    .track-hero{background:linear-gradient(135deg,#1e3a8a 0%,#2563eb 55%,#0ea5e9 100%);padding:3.5rem 0 2.5rem;color:#fff;position:relative;overflow:hidden}
+    .track-hero::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");pointer-events:none}
+    .track-hero h1{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:800;line-height:1.2}
+    .track-hero p{opacity:.85;font-size:.95rem}
+    .search-card{background:#fff;border-radius:20px;padding:2rem;box-shadow:0 8px 32px rgba(37,99,235,.15);margin-top:-2rem;position:relative;z-index:2}
+    .track-input{border:2px solid var(--border);border-radius:12px;padding:.8rem 1.1rem;font-size:1rem;font-family:var(--font);width:100%;outline:none;transition:border-color .15s}
+    .track-input:focus{border-color:var(--primary)}
+    .track-input::placeholder{color:var(--gray-400)}
+    .track-btn{background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff;border:none;border-radius:12px;padding:.8rem 2rem;font-family:var(--font);font-weight:600;font-size:.95rem;cursor:pointer;transition:opacity .15s;white-space:nowrap}
+    .track-btn:hover{opacity:.88}
+    /* Result card */
+    .result-card{background:#fff;border-radius:20px;padding:2rem;box-shadow:0 4px 24px rgba(0,0,0,.08);border:1.5px solid var(--border)}
+    /* Status timeline */
+    .timeline-wrap{position:relative;padding:1.5rem 0 .5rem}
+    .timeline-steps{display:flex;justify-content:space-between;position:relative}
+    .timeline-steps::before{content:'';position:absolute;top:22px;left:0;right:0;height:4px;background:var(--gray-200);z-index:0}
+    .timeline-progress{position:absolute;top:22px;left:0;height:4px;background:linear-gradient(90deg,#2563eb,#0ea5e9);z-index:1;transition:width .6s cubic-bezier(.4,0,.2,1)}
+    .step-item{display:flex;flex-direction:column;align-items:center;position:relative;z-index:2;flex:1}
+    .step-dot{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.1rem;border:3px solid var(--gray-200);background:#fff;transition:all .4s;position:relative}
+    .step-dot.done{border-color:#2563eb;background:linear-gradient(135deg,#2563eb,#0ea5e9);color:#fff}
+    .step-dot.active{border-color:#2563eb;background:#fff;color:#2563eb;box-shadow:0 0 0 4px rgba(37,99,235,.15)}
+    .step-dot.cancelled{border-color:#ef4444;background:linear-gradient(135deg,#ef4444,#f97316);color:#fff}
+    .step-label{margin-top:.6rem;font-size:.72rem;font-weight:600;text-align:center;color:var(--gray-400);max-width:80px;line-height:1.3}
+    .step-label.done,.step-label.active{color:var(--gray-700)}
+    /* Items table */
+    .items-table{width:100%;border-collapse:collapse}
+    .items-table th{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--gray-400);font-weight:600;padding:.5rem .75rem;border-bottom:2px solid var(--border);text-align:left}
+    .items-table td{padding:.65rem .75rem;border-bottom:1px solid var(--gray-100);font-size:.875rem;vertical-align:middle}
+    .items-table tr:last-child td{border-bottom:none}
+    /* Status badge */
+    .status-pill{display:inline-flex;align-items:center;gap:.4rem;padding:.35rem 1rem;border-radius:50px;font-size:.8rem;font-weight:700}
+    /* Cancelled banner */
+    .cancelled-banner{background:#fff5f5;border:1.5px solid #fecaca;border-radius:14px;padding:1.25rem 1.5rem;display:flex;align-items:center;gap:1rem}
+    /* Info rows */
+    .info-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem}
+    .info-box{background:var(--gray-50);border-radius:12px;padding:1rem 1.1rem}
+    .info-box .label{font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;color:var(--gray-400);font-weight:600;margin-bottom:.25rem}
+    .info-box .value{font-size:.9rem;font-weight:600;color:var(--gray-700)}
+    /* Error / Empty */
+    .track-error{background:#fff5f5;border:1.5px solid #fecaca;border-radius:14px;padding:1.5rem;text-align:center}
+    @media(max-width:576px){
+      .step-dot{width:36px;height:36px;font-size:.85rem}
+      .step-label{font-size:.65rem;max-width:60px}
+      .timeline-steps::before{top:18px}
+      .timeline-progress{top:18px}
+      .search-card{padding:1.25rem}
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-main navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Ecom<span>X</span></a>
+    <div class="navbar-search d-none d-lg-block mx-3">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" id="nav-search" placeholder="Search products...">
+    </div>
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+        <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+        <li class="nav-item"><a class="nav-link active" href="track-order.html">Track Order</a></li>
+      </ul>
+      <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+        <a href="cart.html" class="cart-btn position-relative">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cart-count" style="display:none">0</span>
+        </a>
+        <div class="dropdown" id="nav-user-menu" style="display:none">
+          <button class="btn btn-sm d-flex align-items-center gap-2 px-3" style="background:var(--primary);color:#fff;border-radius:50px;font-family:var(--font)" data-bs-toggle="dropdown">
+            <span class="nav-user-initials fw-bold"></span>
+            <span class="nav-user-name"></span>
+            <i class="fa-solid fa-chevron-down small ms-1"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end nav-user-dropdown shadow" style="min-width:220px"></ul>
+        </div>
+        <a href="login.html" class="btn btn-secondary-outline btn-sm" id="nav-login-btn">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm" id="nav-register-btn">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="track-hero">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-7">
+        <span style="display:inline-block;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:.72rem;font-weight:700;letter-spacing:.08em;padding:.3rem .8rem;border-radius:50px;margin-bottom:.75rem;text-transform:uppercase"><i class="fa-solid fa-location-dot me-1"></i>Order Tracking</span>
+        <h1>Track Your Order</h1>
+        <p>Enter your order number below to get real-time updates on your shipment status.</p>
+      </div>
+      <div class="col-lg-5 text-center d-none d-lg-block">
+        <i class="fa-solid fa-truck-fast" style="font-size:6rem;opacity:.15"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH CARD -->
+<div class="container">
+  <div class="search-card">
+    <h5 class="fw-700 mb-1" style="color:var(--gray-700)">Enter Order Number</h5>
+    <p class="small text-muted mb-3">Your order number looks like <strong>ECX-00001</strong> and can be found in your order confirmation or account.</p>
+    <div class="d-flex gap-2 flex-wrap">
+      <input type="text" id="order-input" class="track-input flex-fill" placeholder="e.g. ECX-00001" autocomplete="off" spellcheck="false">
+      <button class="track-btn" id="track-btn" onclick="trackOrder()">
+        <i class="fa-solid fa-magnifying-glass me-2"></i>Track Order
+      </button>
+    </div>
+    <div id="track-error" class="mt-2 small" style="color:var(--danger);display:none"></div>
+  </div>
+</div>
+
+<!-- RESULT SECTION -->
+<div class="container py-4" id="result-section" style="display:none">
+  <div class="result-card" id="result-card"></div>
+</div>
+
+<!-- EMPTY / LOADING -->
+<div class="container py-3" id="loading-section" style="display:none">
+  <div class="text-center py-4">
+    <i class="fa-solid fa-spinner fa-spin fa-2x" style="color:var(--primary)"></i>
+    <p class="mt-2 text-muted small">Looking up your order…</p>
+  </div>
+</div>
+
+<div class="py-5"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(function() {
+  var BASE = (typeof api !== 'undefined' && api.BASE) ? api.BASE : 'http://localhost:5000';
+
+  var STATUS_ORDER = ['pending', 'processing', 'shipped', 'delivered'];
+  var STEPS = [
+    { key: 'pending',    label: 'Order Placed',  icon: 'fa-receipt' },
+    { key: 'processing', label: 'Processing',    icon: 'fa-gear' },
+    { key: 'shipped',    label: 'Shipped',        icon: 'fa-truck' },
+    { key: 'delivered',  label: 'Delivered',      icon: 'fa-circle-check' },
+  ];
+
+  function statusIndex(s) {
+    var idx = STATUS_ORDER.indexOf(s);
+    return idx === -1 ? 0 : idx;
+  }
+
+  function buildTimeline(status) {
+    var cancelled = status === 'cancelled';
+    var currentIdx = cancelled ? 0 : statusIndex(status);
+    var progressPct = cancelled ? 0 : (currentIdx / (STEPS.length - 1)) * 100;
+
+    var stepsHtml = STEPS.map(function(step, i) {
+      var isDone   = !cancelled && i < currentIdx;
+      var isActive = !cancelled && i === currentIdx;
+      var isCancelled = cancelled && i === 0;
+      var dotClass = isCancelled ? 'cancelled' : (isDone ? 'done' : (isActive ? 'active' : ''));
+      var labelClass = (isDone || isActive) ? 'done' : '';
+      return '<div class="step-item">'
+        + '<div class="step-dot ' + dotClass + '"><i class="fa-solid ' + step.icon + '"></i></div>'
+        + '<div class="step-label ' + labelClass + '">' + step.label + '</div>'
+        + '</div>';
+    }).join('');
+
+    return '<div class="timeline-wrap">'
+      + '<div class="timeline-steps">'
+      + '<div class="timeline-progress" style="width:' + progressPct + '%"></div>'
+      + stepsHtml
+      + '</div>'
+      + '</div>';
+  }
+
+  function statusPill(status) {
+    var cfg = {
+      pending:    { bg:'#f3f4f6', color:'#6b7280', icon:'fa-clock' },
+      processing: { bg:'#fffbeb', color:'#d97706', icon:'fa-gear' },
+      shipped:    { bg:'#eff6ff', color:'#2563eb', icon:'fa-truck' },
+      delivered:  { bg:'#f0fdf4', color:'#16a34a', icon:'fa-circle-check' },
+      cancelled:  { bg:'#fff5f5', color:'#ef4444', icon:'fa-times-circle' },
+    };
+    var c = cfg[status] || cfg.pending;
+    return '<span class="status-pill" style="background:' + c.bg + ';color:' + c.color + '">'
+      + '<i class="fa-solid ' + c.icon + '"></i>' + status.charAt(0).toUpperCase() + status.slice(1)
+      + '</span>';
+  }
+
+  function formatDate(dt) {
+    if (!dt) return '—';
+    try {
+      var d = new Date(dt);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    } catch(e) { return dt.split('T')[0]; }
+  }
+
+  function renderOrder(o) {
+    var status = o.status || 'pending';
+    var items  = o.items || [];
+    var num    = o.order_number || ('ECX-' + String(o.id || 0).padStart(5, '0'));
+    var _sa = o.shipping_address;
+    var addr = '';
+    if (_sa && typeof _sa === 'object') {
+      addr = [_sa.name, _sa.street, _sa.city, _sa.country].filter(Boolean).join(', ');
+    } else if (_sa) {
+      addr = String(_sa);
+    }
+    var cancelled = status === 'cancelled';
+
+    var cancelBanner = cancelled
+      ? '<div class="cancelled-banner mb-4"><div style="width:44px;height:44px;border-radius:50%;background:#fee2e2;display:flex;align-items:center;justify-content:center;flex-shrink:0"><i class="fa-solid fa-times-circle" style="color:#ef4444;font-size:1.2rem"></i></div><div><div class="fw-700" style="color:#b91c1c">Order Cancelled</div><div class="small text-muted mt-1">This order has been cancelled. If you have questions, please contact support.</div></div></div>'
+      : '';
+
+    var statusMsg = '';
+    if (!cancelled) {
+      var msgs = {
+        pending:    'Your order has been received and is awaiting confirmation.',
+        processing: 'Great! Your order is being prepared and packed.',
+        shipped:    'Your package is on its way! It\'s been handed to the courier.',
+        delivered:  'Your order has been delivered. Enjoy your purchase!',
+      };
+      statusMsg = '<div class="alert mb-4" style="background:var(--primary-light);border:1.5px solid var(--primary-border,#bfdbfe);border-radius:12px;color:var(--primary);font-size:.875rem;font-weight:500">'
+        + '<i class="fa-solid fa-circle-info me-2"></i>' + (msgs[status] || 'Tracking your order.')
+        + '</div>';
+    }
+
+    var infoHtml = '<div class="info-grid">'
+      + '<div class="info-box"><div class="label">Order Number</div><div class="value">' + num + '</div></div>'
+      + '<div class="info-box"><div class="label">Order Date</div><div class="value">' + formatDate(o.created_at) + '</div></div>'
+      + '<div class="info-box"><div class="label">Status</div><div class="value">' + statusPill(status) + '</div></div>'
+      + '<div class="info-box"><div class="label">Total</div><div class="value" style="color:var(--primary)">$' + parseFloat(o.total || 0).toFixed(2) + '</div></div>'
+      + (addr ? '<div class="info-box"><div class="label">Ship To</div><div class="value" style="font-size:.8rem">' + addr.replace(/\n/g,'<br>') + '</div></div>' : '')
+      + '</div>';
+
+    var itemsHtml = '';
+    if (items.length) {
+      itemsHtml = '<h6 class="fw-700 mb-3" style="color:var(--gray-700)"><i class="fa-solid fa-box me-2" style="color:var(--primary)"></i>Order Items</h6>'
+        + '<div style="overflow-x:auto"><table class="items-table">'
+        + '<thead><tr><th>Product</th><th>Qty</th><th class="text-end">Price</th><th class="text-end">Subtotal</th></tr></thead>'
+        + '<tbody>'
+        + items.map(function(it) {
+            var name = it.product_name || it.name || 'Item';
+            var qty  = it.quantity || 1;
+            var price = parseFloat(it.price || 0);
+            return '<tr>'
+              + '<td class="fw-500">' + name + '</td>'
+              + '<td style="color:var(--gray-500)">&times;' + qty + '</td>'
+              + '<td class="text-end">$' + price.toFixed(2) + '</td>'
+              + '<td class="text-end fw-600" style="color:var(--primary)">$' + (price * qty).toFixed(2) + '</td>'
+              + '</tr>';
+          }).join('')
+        + '</tbody></table></div>';
+
+      var subtotal = items.reduce(function(s, it) { return s + (parseFloat(it.price||0) * (it.quantity||1)); }, 0);
+      itemsHtml += '<div class="d-flex flex-column align-items-end gap-1 mt-3">'
+        + '<div class="small text-muted">Subtotal: <strong>$' + subtotal.toFixed(2) + '</strong></div>'
+        + (o.discount_amount > 0 ? '<div class="small" style="color:var(--success)">Discount: -$' + parseFloat(o.discount_amount).toFixed(2) + '</div>' : '')
+        + (o.tax > 0 ? '<div class="small text-muted">Tax: $' + parseFloat(o.tax).toFixed(2) + '</div>' : '')
+        + '<div class="fw-700 mt-1" style="font-size:1.05rem;color:var(--primary)">Total: $' + parseFloat(o.total||0).toFixed(2) + '</div>'
+        + '</div>';
+    }
+
+    document.getElementById('result-card').innerHTML =
+      '<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">'
+      + '<h5 class="fw-800 mb-0" style="color:var(--gray-700)"><i class="fa-solid fa-location-dot me-2" style="color:var(--primary)"></i>' + num + '</h5>'
+      + '<a href="products.html" class="btn btn-sm" style="background:var(--primary-light);color:var(--primary);border:none;border-radius:8px;font-weight:600"><i class="fa-solid fa-store me-1"></i>Continue Shopping</a>'
+      + '</div>'
+      + cancelBanner
+      + buildTimeline(status)
+      + '<hr style="margin:1.5rem 0;border-color:var(--border)">'
+      + statusMsg
+      + infoHtml
+      + itemsHtml;
+
+    document.getElementById('result-section').style.display = '';
+  }
+
+  window.trackOrder = function() {
+    var raw = (document.getElementById('order-input').value || '').trim().toUpperCase();
+    var errEl = document.getElementById('track-error');
+    errEl.style.display = 'none';
+
+    if (!raw) {
+      errEl.textContent = 'Please enter an order number (e.g. ECX-00001).';
+      errEl.style.display = '';
+      return;
+    }
+    if (!raw.match(/^ECX-?\d+$/i) && !raw.match(/^\d+$/)) {
+      errEl.textContent = 'Invalid format. Please enter an order number like ECX-00001.';
+      errEl.style.display = '';
+      return;
+    }
+
+    document.getElementById('result-section').style.display = 'none';
+    document.getElementById('loading-section').style.display = '';
+    document.getElementById('track-btn').disabled = true;
+
+    var orderNum = raw.startsWith('ECX') ? raw : ('ECX-' + raw.padStart(5, '0'));
+    if (!orderNum.includes('-')) orderNum = 'ECX-' + orderNum.replace('ECX', '').padStart(5, '0');
+
+    fetch(BASE + '/api/orders/track/' + encodeURIComponent(orderNum))
+      .then(function(r) { return r.json().then(function(d) { return { ok: r.ok, data: d }; }); })
+      .then(function(res) {
+        document.getElementById('loading-section').style.display = 'none';
+        document.getElementById('track-btn').disabled = false;
+        if (!res.ok || res.data.error) {
+          errEl.textContent = res.data.error || 'Order not found. Please check the order number.';
+          errEl.style.display = '';
+          return;
+        }
+        renderOrder(res.data.order);
+        window.history.replaceState(null, '', 'track-order.html?order=' + encodeURIComponent(orderNum));
+      })
+      .catch(function() {
+        document.getElementById('loading-section').style.display = 'none';
+        document.getElementById('track-btn').disabled = false;
+        errEl.textContent = 'Could not connect to server. Make sure the backend is running.';
+        errEl.style.display = '';
+      });
+  };
+
+  // Allow pressing Enter in the input
+  document.getElementById('order-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') window.trackOrder();
+  });
+
+  // Nav search
+  document.addEventListener('DOMContentLoaded', function() {
+    Auth.initUI();
+    Cart.updateBadge();
+    var navSearchEl = document.getElementById('nav-search');
+    if (navSearchEl) {
+      navSearchEl.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && this.value.trim()) {
+          window.location.href = 'products.html?search=' + encodeURIComponent(this.value.trim());
+        }
+      });
+    }
+
+    // Auto-track from URL param
+    var params = new URLSearchParams(window.location.search);
+    var ordParam = params.get('order');
+    if (ordParam) {
+      document.getElementById('order-input').value = ordParam.toUpperCase();
+      window.trackOrder();
+    }
+  });
+})();
+</script>
+</body>
+</html>

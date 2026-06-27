@@ -1,0 +1,285 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Products — EcomX Seller</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+<script>(function(){var u=null;try{u=JSON.parse(localStorage.getItem('ecomx_user')||'null');}catch(e){}if(!u||(u.role!=='seller'&&u.role!=='admin')){window.location.replace('../login.html');}})();</script>
+</head>
+<body>
+
+<nav class="navbar navbar-main navbar-expand-lg">
+  <div class="container-fluid px-4">
+    <button id="sidebar-toggle" class="btn btn-sm me-3 d-lg-none" style="border:1.5px solid var(--border)"><i class="fa-solid fa-bars"></i></button>
+    <a class="navbar-brand" href="../index.html">Ecom<span>X</span> <span class="badge ms-1" style="background:var(--secondary);font-size:.6rem;padding:.25rem .5rem;border-radius:4px;font-weight:600;vertical-align:middle">SELLER</span></a>
+    <div class="ms-auto d-flex align-items-center gap-2">
+      <div class="avatar-sm" style="background:var(--secondary);color:white;width:36px;height:36px;border-radius:50%">TZ</div>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" style="background:var(--secondary)">TZ</div>
+      <div class="sidebar-user-name">TechZone Store</div>
+      <div class="sidebar-user-role">Verified Seller</div>
+    </div>
+    <span class="sidebar-section-label">Store Management</span>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
+      <li><a href="products.html" class="active"><i class="fa-solid fa-box-open"></i>My Products</a></li>
+      <li><a href="orders.html"><i class="fa-solid fa-truck"></i>Orders</a></li>
+      <li><a href="#"><i class="fa-solid fa-chart-line"></i>Analytics</a></li>
+    </ul>
+    <span class="sidebar-section-label">Finance</span>
+    <ul class="sidebar-nav">
+      <li><a href="#"><i class="fa-solid fa-wallet"></i>Earnings</a></li>
+    </ul>
+    <div class="sidebar-bottom">
+      <a href="../login.html" class="sidebar-logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="page-header d-flex align-items-start justify-content-between flex-wrap gap-2">
+      <div>
+        <h1 class="page-title">My Products</h1>
+        <p class="page-subtitle">Manage your product catalog — 34 active products</p>
+      </div>
+      <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addProductModal">
+        <i class="fa-solid fa-plus me-2"></i>Add New Product
+      </button>
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="data-card-header mb-4" style="background:white;border:1.5px solid var(--border);border-radius:var(--radius)">
+      <div class="d-flex gap-2 flex-wrap w-100 align-items-center">
+        <div class="position-relative flex-fill" style="min-width:200px">
+          <i class="fa-solid fa-magnifying-glass position-absolute" style="left:.75rem;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:.8rem"></i>
+          <input type="text" class="form-control" style="padding-left:2.25rem;font-size:.875rem" placeholder="Search products...">
+        </div>
+        <select class="form-control" style="max-width:140px;font-size:.875rem">
+          <option>All Status</option>
+          <option>Active</option>
+          <option>Draft</option>
+          <option>Out of Stock</option>
+        </select>
+        <select class="form-control" style="max-width:140px;font-size:.875rem">
+          <option>All Categories</option>
+          <option>Electronics</option>
+          <option>Accessories</option>
+          <option>Gadgets</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="data-card">
+      <div class="data-card-header">
+        <div class="data-card-title">All Products <span class="badge ms-2" style="background:var(--primary-light);color:var(--primary);font-weight:500">34</span></div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-sm" style="border:1.5px solid var(--border);font-family:var(--font)"><i class="fa-solid fa-download me-1"></i>Export</button>
+        </div>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th><input type="checkbox" style="accent-color:var(--primary)"></th>
+            <th>Product</th>
+            <th>Category</th>
+            <th>Price</th>
+            <th>Stock</th>
+            <th>Sales</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><input type="checkbox" style="accent-color:var(--primary)"></td>
+            <td>
+              <div class="d-flex align-items-center gap-3">
+                <img src="https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=48&h=48&fit=crop" class="product-thumb" alt="AirPods">
+                <div>
+                  <div class="fw-600" style="font-size:.875rem">AirPods Pro</div>
+                  <div class="text-muted" style="font-size:.75rem">SKU: APRD-001</div>
+                </div>
+              </div>
+            </td>
+            <td style="font-size:.875rem">Electronics</td>
+            <td class="fw-600">$199.99</td>
+            <td><span style="font-size:.875rem;color:var(--success);font-weight:600">47 units</span></td>
+            <td style="font-size:.875rem">87 sold</td>
+            <td><span class="status-badge badge-active">Active</span></td>
+            <td>
+              <div class="d-flex gap-1">
+                <button class="btn-icon" style="background:var(--primary-light);color:var(--primary);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)" title="Edit" data-bs-toggle="modal" data-bs-target="#editProductModal"><i class="fa-solid fa-pen" style="font-size:.75rem"></i></button>
+                <button class="btn-icon" style="background:var(--info-light);color:var(--info);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)" title="View"><i class="fa-solid fa-eye" style="font-size:.75rem"></i></button>
+                <button class="btn-icon" style="background:var(--danger-light);color:var(--danger);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)" title="Delete"><i class="fa-solid fa-trash" style="font-size:.75rem"></i></button>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" style="accent-color:var(--primary)"></td>
+            <td><div class="d-flex align-items-center gap-3"><img src="https://images.unsplash.com/photo-1595044426077-d36d9236d54a?w=48&h=48&fit=crop" class="product-thumb" alt="Keyboard"><div><div class="fw-600" style="font-size:.875rem">MechType Pro Keyboard</div><div class="text-muted" style="font-size:.75rem">SKU: MECH-KB-001</div></div></div></td>
+            <td style="font-size:.875rem">Electronics</td>
+            <td class="fw-600">$79.99</td>
+            <td><span style="font-size:.875rem;color:var(--success);font-weight:600">23 units</span></td>
+            <td style="font-size:.875rem">64 sold</td>
+            <td><span class="status-badge badge-active">Active</span></td>
+            <td><div class="d-flex gap-1"><button class="btn-icon" style="background:var(--primary-light);color:var(--primary);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)" data-bs-toggle="modal" data-bs-target="#editProductModal"><i class="fa-solid fa-pen" style="font-size:.75rem"></i></button><button class="btn-icon" style="background:var(--info-light);color:var(--info);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)"><i class="fa-solid fa-eye" style="font-size:.75rem"></i></button><button class="btn-icon" style="background:var(--danger-light);color:var(--danger);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)"><i class="fa-solid fa-trash" style="font-size:.75rem"></i></button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" style="accent-color:var(--primary)"></td>
+            <td><div class="d-flex align-items-center gap-3"><img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=48&h=48&fit=crop" class="product-thumb" alt="Watch"><div><div class="fw-600" style="font-size:.875rem">FitPulse Smart Watch</div><div class="text-muted" style="font-size:.75rem">SKU: FP-WATCH-001</div></div></div></td>
+            <td style="font-size:.875rem">Electronics</td>
+            <td class="fw-600">$149.00</td>
+            <td><span style="font-size:.875rem;color:var(--warning);font-weight:600">5 units</span></td>
+            <td style="font-size:.875rem">41 sold</td>
+            <td><span class="status-badge badge-active">Active</span></td>
+            <td><div class="d-flex gap-1"><button class="btn-icon" style="background:var(--primary-light);color:var(--primary);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)" data-bs-toggle="modal" data-bs-target="#editProductModal"><i class="fa-solid fa-pen" style="font-size:.75rem"></i></button><button class="btn-icon" style="background:var(--info-light);color:var(--info);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)"><i class="fa-solid fa-eye" style="font-size:.75rem"></i></button><button class="btn-icon" style="background:var(--danger-light);color:var(--danger);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)"><i class="fa-solid fa-trash" style="font-size:.75rem"></i></button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" style="accent-color:var(--primary)"></td>
+            <td><div class="d-flex align-items-center gap-3"><img src="https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=48&h=48&fit=crop" class="product-thumb" alt="Speaker"><div><div class="fw-600" style="font-size:.875rem">SoundWave Pro Speaker</div><div class="text-muted" style="font-size:.75rem">SKU: SW-SPK-001</div></div></div></td>
+            <td style="font-size:.875rem">Electronics</td>
+            <td class="fw-600">$69.99</td>
+            <td><span style="font-size:.875rem;color:var(--danger);font-weight:600">0 units</span></td>
+            <td style="font-size:.875rem">36 sold</td>
+            <td><span class="status-badge badge-inactive">Out of Stock</span></td>
+            <td><div class="d-flex gap-1"><button class="btn-icon" style="background:var(--primary-light);color:var(--primary);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)" data-bs-toggle="modal" data-bs-target="#editProductModal"><i class="fa-solid fa-pen" style="font-size:.75rem"></i></button><button class="btn-icon" style="background:var(--info-light);color:var(--info);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)"><i class="fa-solid fa-eye" style="font-size:.75rem"></i></button><button class="btn-icon" style="background:var(--danger-light);color:var(--danger);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)"><i class="fa-solid fa-trash" style="font-size:.75rem"></i></button></div></td>
+          </tr>
+          <tr>
+            <td><input type="checkbox" style="accent-color:var(--primary)"></td>
+            <td><div class="d-flex align-items-center gap-3"><img src="https://images.unsplash.com/photo-1601593346740-925612772716?w=48&h=48&fit=crop" class="product-thumb" alt="Phone Case"><div><div class="fw-600" style="font-size:.875rem">ArmorShield Pro Phone Case</div><div class="text-muted" style="font-size:.75rem">SKU: AS-CASE-002</div></div></div></td>
+            <td style="font-size:.875rem">Accessories</td>
+            <td class="fw-600">$19.99</td>
+            <td><span style="font-size:.875rem;color:var(--success);font-weight:600">120 units</span></td>
+            <td style="font-size:.875rem">215 sold</td>
+            <td><span class="status-badge badge-active">Active</span></td>
+            <td><div class="d-flex gap-1"><button class="btn-icon" style="background:var(--primary-light);color:var(--primary);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)" data-bs-toggle="modal" data-bs-target="#editProductModal"><i class="fa-solid fa-pen" style="font-size:.75rem"></i></button><button class="btn-icon" style="background:var(--info-light);color:var(--info);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)"><i class="fa-solid fa-eye" style="font-size:.75rem"></i></button><button class="btn-icon" style="background:var(--danger-light);color:var(--danger);border:none;cursor:pointer;width:30px;height:30px;border-radius:var(--radius-sm)"><i class="fa-solid fa-trash" style="font-size:.75rem"></i></button></div></td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="data-card-header" style="border-top:1px solid var(--border);border-bottom:none">
+        <div style="font-size:.8rem;color:var(--gray-400)">Showing 5 of 34 products</div>
+        <nav><ul class="pagination pagination-sm mb-0"><li class="page-item disabled"><a class="page-link" href="#">‹</a></li><li class="page-item active"><a class="page-link" href="#">1</a></li><li class="page-item"><a class="page-link" href="#">2</a></li><li class="page-item"><a class="page-link" href="#">3</a></li><li class="page-item"><a class="page-link" href="#">›</a></li></ul></nav>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ADD PRODUCT MODAL -->
+<div class="modal fade" id="addProductModal" tabindex="-1">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-plus me-2 text-primary"></i>Add New Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Product Name</label>
+            <input type="text" class="form-control" placeholder="e.g. AirPods Pro — Noise Cancelling">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Category</label>
+            <select class="form-control"><option>Electronics</option><option>Fashion</option><option>Home & Garden</option><option>Beauty</option><option>Sports</option></select>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Brand</label>
+            <input type="text" class="form-control" placeholder="Brand name">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Original Price ($)</label>
+            <input type="number" class="form-control" placeholder="0.00">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Sale Price ($)</label>
+            <input type="number" class="form-control" placeholder="0.00">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Stock Quantity</label>
+            <input type="number" class="form-control" placeholder="0">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" rows="3" placeholder="Describe your product..."></textarea>
+          </div>
+          <div class="col-12">
+            <label class="form-label">Product Images</label>
+            <div class="border-dashed rounded-3 p-4 text-center" style="border:2px dashed var(--border);cursor:pointer">
+              <i class="fa-solid fa-cloud-arrow-up fa-2x mb-2" style="color:var(--gray-300)"></i>
+              <p class="text-muted small mb-0">Drag & drop images here or <span style="color:var(--primary)">browse</span></p>
+              <p class="text-muted" style="font-size:.75rem">PNG, JPG up to 5MB each. Min 800×800px</p>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">SKU</label>
+            <input type="text" class="form-control" placeholder="e.g. PROD-001">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Status</label>
+            <select class="form-control"><option>Active</option><option>Draft</option></select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" style="border:1.5px solid var(--border);font-family:var(--font)" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="Toast.show('Product added successfully!','success')">Add Product</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT PRODUCT MODAL -->
+<div class="modal fade" id="editProductModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-pen me-2 text-primary"></i>Edit Product</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <div class="row g-3">
+          <div class="col-12">
+            <label class="form-label">Product Name</label>
+            <input type="text" class="form-control" value="AirPods Pro — Noise Cancelling Earbuds">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Price ($)</label>
+            <input type="number" class="form-control" value="199.99">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Original Price ($)</label>
+            <input type="number" class="form-control" value="249.99">
+          </div>
+          <div class="col-md-4">
+            <label class="form-label">Stock</label>
+            <input type="number" class="form-control" value="47">
+          </div>
+          <div class="col-12">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" rows="3">Experience immersive audio with industry-leading Active Noise Cancellation...</textarea>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-sm" style="border:1.5px solid var(--border);font-family:var(--font)" data-bs-dismiss="modal">Cancel</button>
+        <button class="btn btn-primary btn-sm" onclick="Toast.show('Product updated!','success')">Save Changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

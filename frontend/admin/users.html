@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Users — EcomX Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+<script>(function(){var u=null;try{u=JSON.parse(localStorage.getItem('ecomx_user')||'null');}catch(e){}if(!u||u.role!=='admin'){window.location.replace('../login.html');}})();</script>
+  <style>
+    .tab-filter-btn { background:none; border:1.5px solid var(--border); border-radius:50px; padding:.35rem 1rem; font-family:var(--font); font-size:.8rem; font-weight:500; color:var(--gray-500); cursor:pointer; transition:all .2s; }
+    .tab-filter-btn.active { background:var(--primary); border-color:var(--primary); color:#fff; }
+    .user-detail-modal .modal-dialog { max-width:780px; }
+    .detail-stat { background:var(--gray-100); border-radius:10px; padding:.75rem 1rem; text-align:center; }
+    .detail-stat .val { font-size:1.3rem; font-weight:700; color:var(--primary); }
+    .detail-stat .lbl { font-size:.75rem; color:var(--gray-500); margin-top:.1rem; }
+    .products-mini-table td, .products-mini-table th { font-size:.8rem; padding:.4rem .6rem; }
+    .order-mini-row { border-left:3px solid var(--primary); border-radius:0 8px 8px 0; background:#fff; padding:.6rem .85rem; margin-bottom:.4rem; font-size:.82rem; }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-main navbar-expand-lg">
+  <div class="container-fluid px-4">
+    <button id="sidebar-toggle" class="btn btn-sm me-3 d-lg-none" style="border:1.5px solid var(--border)"><i class="fa-solid fa-bars"></i></button>
+    <a class="navbar-brand" href="../index.html">Ecom<span>X</span> <span class="badge ms-1" style="background:var(--danger);font-size:.6rem;padding:.25rem .5rem;border-radius:4px;font-weight:600;vertical-align:middle">ADMIN</span></a>
+    <div class="ms-auto d-flex align-items-center gap-2">
+      <div class="avatar-sm" style="background:var(--danger);color:white;width:36px;height:36px;border-radius:50%">AD</div>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" style="background:var(--danger)">AD</div>
+      <div class="sidebar-user-name">Super Admin</div>
+      <div class="sidebar-user-role">System Administrator</div>
+    </div>
+    <span class="sidebar-section-label">Overview</span>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html"><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
+    </ul>
+    <span class="sidebar-section-label">Management</span>
+    <ul class="sidebar-nav">
+      <li><a href="users.html" class="active"><i class="fa-solid fa-users"></i>Users</a></li>
+      <li><a href="products.html"><i class="fa-solid fa-box-open"></i>Products</a></li>
+      <li><a href="orders.html"><i class="fa-solid fa-truck"></i>Orders</a></li>
+      <li><a href="#"><i class="fa-solid fa-store"></i>Sellers</a></li>
+      <li><a href="#"><i class="fa-solid fa-tags"></i>Categories</a></li>
+      <li><a href="#"><i class="fa-solid fa-percent"></i>Coupons</a></li>
+    </ul>
+    <span class="sidebar-section-label">System</span>
+    <ul class="sidebar-nav">
+      <li><a href="#"><i class="fa-solid fa-gear"></i>Settings</a></li>
+    </ul>
+    <div class="sidebar-bottom">
+      <a href="../login.html" class="sidebar-logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="page-header d-flex align-items-start justify-content-between flex-wrap gap-2">
+      <div>
+        <h1 class="page-title">User Management</h1>
+        <p class="page-subtitle" id="users-subtitle">Loading users…</p>
+      </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-4">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--info-light);width:40px;height:40px;font-size:.9rem"><i class="fa-solid fa-user" style="color:var(--info)"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem" id="stat-customers">—</div><div class="stat-label">Customers</div></div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--secondary-light);width:40px;height:40px;font-size:.9rem"><i class="fa-solid fa-store" style="color:var(--secondary-hover)"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem" id="stat-sellers">—</div><div class="stat-label">Sellers</div></div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--danger-light);width:40px;height:40px;font-size:.9rem"><i class="fa-solid fa-shield-halved" style="color:var(--danger)"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem" id="stat-admins">—</div><div class="stat-label">Admins</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab Filters -->
+    <div class="d-flex gap-2 mb-3 flex-wrap align-items-center">
+      <button class="tab-filter-btn active" id="tab-all" onclick="filterUsers('all', this)"><i class="fa-solid fa-users me-1"></i>All Users</button>
+      <button class="tab-filter-btn" id="tab-seller" onclick="filterUsers('seller', this)"><i class="fa-solid fa-store me-1"></i>Sellers</button>
+      <button class="tab-filter-btn" id="tab-customer" onclick="filterUsers('customer', this)"><i class="fa-solid fa-user me-1"></i>Buyers</button>
+      <div class="ms-auto position-relative" style="min-width:220px">
+        <i class="fa-solid fa-magnifying-glass position-absolute" style="left:.75rem;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:.8rem"></i>
+        <input type="text" class="form-control" id="user-search" style="padding-left:2.25rem;font-size:.875rem" placeholder="Search name or email…" oninput="renderUsersTable()">
+      </div>
+    </div>
+
+    <!-- Users Table -->
+    <div class="data-card">
+      <div class="data-card-header">
+        <div class="data-card-title">Users <span class="badge ms-2" style="background:var(--primary-light);color:var(--primary);font-weight:500" id="users-count-badge">…</span></div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table" style="min-width:700px">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Role</th>
+              <th>Joined</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="users-tbody">
+            <tr><td colspan="5" class="text-center py-5"><i class="fa-solid fa-spinner fa-spin me-2"></i>Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="data-card-header" style="border-top:1px solid var(--border);border-bottom:none">
+        <div style="font-size:.8rem;color:var(--gray-400)" id="users-showing">—</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- SELLER DETAIL MODAL -->
+<div class="modal fade user-detail-modal" id="sellerModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-store me-2 text-primary"></i>Seller Details</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="seller-modal-body">
+        <div class="text-center py-4"><i class="fa-solid fa-spinner fa-spin fa-2x" style="color:var(--primary)"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BUYER DETAIL MODAL -->
+<div class="modal fade user-detail-modal" id="buyerModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-user me-2 text-primary"></i>Buyer Orders</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body" id="buyer-modal-body">
+        <div class="text-center py-4"><i class="fa-solid fa-spinner fa-spin fa-2x" style="color:var(--primary)"></i></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+var API_BASE = (location.protocol === 'file:') ? 'http://localhost:5000' : location.origin;
+var _allUsers = [];
+var _activeRole = 'all';
+
+function getToken() { return localStorage.getItem('ecomx_token'); }
+
+async function apiFetch(path, opts) {
+  var res = await fetch(API_BASE + path, Object.assign({ headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' } }, opts || {}));
+  return res;
+}
+
+async function loadUsers() {
+  try {
+    var r = await apiFetch('/api/admin/users');
+    if (!r.ok) { showError(); return; }
+    var d = await r.json();
+    _allUsers = d.users || [];
+    updateStats();
+    renderUsersTable();
+  } catch(e) { showError(); }
+}
+
+function showError() {
+  document.getElementById('users-tbody').innerHTML = '<tr><td colspan="5" class="text-center py-5 text-danger"><i class="fa-solid fa-triangle-exclamation me-2"></i>Could not load users. Is the backend running?</td></tr>';
+}
+
+function updateStats() {
+  var customers = _allUsers.filter(function(u){ return u.role === 'customer'; }).length;
+  var sellers   = _allUsers.filter(function(u){ return u.role === 'seller'; }).length;
+  var admins    = _allUsers.filter(function(u){ return u.role === 'admin'; }).length;
+  document.getElementById('stat-customers').textContent = customers;
+  document.getElementById('stat-sellers').textContent   = sellers;
+  document.getElementById('stat-admins').textContent    = admins;
+  document.getElementById('users-subtitle').textContent = 'Manage all platform users — ' + _allUsers.length + ' registered';
+}
+
+function filterUsers(role, btn) {
+  _activeRole = role;
+  document.querySelectorAll('.tab-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderUsersTable();
+}
+
+function renderUsersTable() {
+  var search = (document.getElementById('user-search').value || '').toLowerCase();
+  var filtered = _allUsers.filter(function(u) {
+    if (_activeRole !== 'all' && u.role !== _activeRole) return false;
+    if (search && !((u.name||'').toLowerCase().includes(search) || (u.email||'').toLowerCase().includes(search))) return false;
+    return true;
+  });
+
+  document.getElementById('users-count-badge').textContent = filtered.length;
+  document.getElementById('users-showing').textContent = 'Showing ' + filtered.length + ' of ' + _allUsers.length + ' users';
+
+  if (!filtered.length) {
+    document.getElementById('users-tbody').innerHTML = '<tr><td colspan="5" class="text-center py-5 text-muted">No users found</td></tr>';
+    return;
+  }
+
+  var ROLE_BADGE = { customer: 'badge-customer', seller: 'badge-seller', admin: 'badge-admin' };
+  var ROLE_LABEL = { customer: 'Customer', seller: 'Seller', admin: 'Admin' };
+  var AV_BG     = { customer: 'var(--info-light)', seller: 'var(--secondary-light)', admin: 'var(--danger-light)' };
+  var AV_CLR    = { customer: 'var(--info)', seller: 'var(--secondary-hover)', admin: 'var(--danger)' };
+
+  document.getElementById('users-tbody').innerHTML = filtered.map(function(u) {
+    var initials = (u.name || u.email || '?').slice(0,2).toUpperCase();
+    var avBg  = AV_BG[u.role]  || 'var(--primary-light)';
+    var avClr = AV_CLR[u.role] || 'var(--primary)';
+    var badge = ROLE_BADGE[u.role] || 'badge-customer';
+    var label = ROLE_LABEL[u.role] || u.role;
+    var joined = u.created_at ? u.created_at.split('T')[0] : '—';
+    var isActive = u.is_active !== false;
+    var statusBadge = isActive ? '<span class="status-badge badge-active">Active</span>' : '<span class="status-badge badge-cancelled">Suspended</span>';
+
+    var actionBtns = '';
+    if (u.role === 'seller') {
+      actionBtns += '<button class="btn btn-sm px-2 py-1 me-1" style="background:var(--primary-light);color:var(--primary);border:none;font-size:.75rem;border-radius:6px" onclick="openSellerDetail(' + u.id + ')"><i class="fa-solid fa-chart-bar me-1"></i>View Details</button>';
+    } else if (u.role === 'customer') {
+      actionBtns += '<button class="btn btn-sm px-2 py-1 me-1" style="background:var(--info-light);color:var(--info);border:none;font-size:.75rem;border-radius:6px" onclick="openBuyerDetail(' + u.id + ')"><i class="fa-solid fa-truck me-1"></i>View Orders</button>';
+    }
+    if (u.role !== 'admin') {
+      var suspendLabel = isActive ? 'Suspend' : 'Activate';
+      var suspendStyle = isActive
+        ? 'background:var(--warning-light);color:#92400e;border:none;font-size:.75rem;border-radius:6px'
+        : 'background:var(--success-light);color:var(--success);border:none;font-size:.75rem;border-radius:6px';
+      actionBtns += '<button class="btn btn-sm px-2 py-1" style="' + suspendStyle + '" onclick="toggleUserStatus(' + u.id + ',' + isActive + ',this)">' + suspendLabel + '</button>';
+    }
+
+    return '<tr>'
+      + '<td><div class="d-flex align-items-center gap-2"><div style="width:36px;height:36px;border-radius:50%;background:' + avBg + ';color:' + avClr + ';display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;flex-shrink:0">' + initials + '</div>'
+      + '<div><div class="fw-600" style="font-size:.875rem">' + (u.name || '—') + '</div><div class="text-muted" style="font-size:.75rem">' + (u.email || '') + '</div></div></div></td>'
+      + '<td><span class="status-badge ' + badge + '">' + label + '</span></td>'
+      + '<td style="font-size:.825rem;color:var(--gray-500)">' + joined + '</td>'
+      + '<td>' + statusBadge + '</td>'
+      + '<td><div class="d-flex align-items-center gap-1 flex-wrap">' + actionBtns + '</div></td>'
+      + '</tr>';
+  }).join('');
+}
+
+async function toggleUserStatus(uid, currentlyActive, btn) {
+  var newStatus = !currentlyActive;
+  btn.disabled = true;
+  try {
+    var r = await apiFetch('/api/admin/users/' + uid, {
+      method: 'PUT',
+      body: JSON.stringify({ is_active: newStatus })
+    });
+    if (r.ok) {
+      var u = _allUsers.find(function(x){ return x.id === uid; });
+      if (u) u.is_active = newStatus;
+      renderUsersTable();
+      if (typeof Toast !== 'undefined') Toast.show('User ' + (newStatus ? 'activated' : 'suspended') + '.', newStatus ? 'success' : 'info');
+    }
+  } catch(e) { btn.disabled = false; }
+}
+
+async function openSellerDetail(uid) {
+  var modal = new bootstrap.Modal(document.getElementById('sellerModal'));
+  document.getElementById('seller-modal-body').innerHTML = '<div class="text-center py-4"><i class="fa-solid fa-spinner fa-spin fa-2x" style="color:var(--primary)"></i></div>';
+  modal.show();
+  try {
+    var r = await apiFetch('/api/admin/sellers/' + uid);
+    if (!r.ok) { document.getElementById('seller-modal-body').innerHTML = '<p class="text-danger text-center py-3">Failed to load seller details.</p>'; return; }
+    var d = await r.json();
+    var u = d.user || {};
+    var products = d.products || [];
+    var recentOrders = d.recent_orders || [];
+
+    var html = '<div class="d-flex align-items-center gap-3 mb-4">'
+      + '<div style="width:52px;height:52px;border-radius:50%;background:var(--primary-light);color:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700">' + (u.name||'?').slice(0,2).toUpperCase() + '</div>'
+      + '<div><div class="fw-700" style="font-size:1rem">' + (u.name||'—') + '</div>'
+      + '<div class="text-muted small">' + (u.email||'') + (u.phone ? ' · ' + u.phone : '') + '</div>'
+      + (u.store_name ? '<div class="small text-primary fw-500"><i class="fa-solid fa-store me-1"></i>' + u.store_name + '</div>' : '')
+      + '</div></div>'
+
+      + '<div class="row g-2 mb-4">'
+      + '<div class="col-6 col-md-3"><div class="detail-stat"><div class="val">' + (d.total_listed || 0) + '</div><div class="lbl">Products Listed</div></div></div>'
+      + '<div class="col-6 col-md-3"><div class="detail-stat"><div class="val">' + (d.total_sold || 0) + '</div><div class="lbl">Total Units Sold</div></div></div>'
+      + '<div class="col-6 col-md-3"><div class="detail-stat"><div class="val">$' + parseFloat(d.total_revenue||0).toFixed(2) + '</div><div class="lbl">Revenue Generated</div></div></div>'
+      + '<div class="col-6 col-md-3"><div class="detail-stat"><div class="val">' + (d.total_orders || 0) + '</div><div class="lbl">Total Orders</div></div></div>'
+      + '</div>';
+
+    if (products.length) {
+      html += '<h6 class="fw-700 mb-2"><i class="fa-solid fa-box-open me-2 text-primary"></i>Products (' + products.length + ')</h6>'
+        + '<div style="overflow-x:auto;max-height:200px;overflow-y:auto" class="mb-4">'
+        + '<table class="table table-sm products-mini-table mb-0"><thead class="table-light sticky-top"><tr><th>Name</th><th>Price</th><th>Stock</th><th>Sold</th><th>Status</th></tr></thead><tbody>'
+        + products.map(function(p) {
+            return '<tr><td>' + (p.name||'—') + '</td><td>$' + parseFloat(p.price||0).toFixed(2) + '</td><td>' + (p.stock||0) + '</td><td>' + (p.sold||0) + '</td>'
+              + '<td><span class="status-badge ' + (p.is_approved ? 'badge-active' : 'badge-pending') + '">' + (p.is_approved ? 'Live' : 'Pending') + '</span></td></tr>';
+          }).join('')
+        + '</tbody></table></div>';
+    }
+
+    if (recentOrders.length) {
+      html += '<h6 class="fw-700 mb-2"><i class="fa-solid fa-truck me-2 text-primary"></i>Recent Orders</h6><div class="d-flex flex-column gap-1">'
+        + recentOrders.map(function(o) {
+            var STATUS_CLR = { processing:'var(--warning)', shipped:'var(--info)', delivered:'var(--success)', cancelled:'var(--danger)', pending:'var(--gray-400)' };
+            var clr = STATUS_CLR[o.status] || 'var(--primary)';
+            var date = o.created_at ? o.created_at.split('T')[0] : '—';
+            return '<div class="order-mini-row d-flex align-items-center justify-content-between gap-2">'
+              + '<div><span class="fw-600">' + (o.order_number||'#'+o.id) + '</span> <span class="text-muted ms-1">' + date + '</span></div>'
+              + '<div class="d-flex align-items-center gap-2">'
+              + '<span style="background:' + clr + '18;color:' + clr + ';border:1px solid ' + clr + '30;border-radius:50px;padding:.1rem .7rem;font-size:.72rem;font-weight:600">' + o.status + '</span>'
+              + '<span class="fw-700 text-primary">$' + parseFloat(o.total||0).toFixed(2) + '</span>'
+              + '</div></div>';
+          }).join('')
+        + '</div>';
+    }
+
+    document.getElementById('seller-modal-body').innerHTML = html;
+  } catch(e) {
+    document.getElementById('seller-modal-body').innerHTML = '<p class="text-danger text-center py-3">Error loading data.</p>';
+  }
+}
+
+async function openBuyerDetail(uid) {
+  var modal = new bootstrap.Modal(document.getElementById('buyerModal'));
+  document.getElementById('buyer-modal-body').innerHTML = '<div class="text-center py-4"><i class="fa-solid fa-spinner fa-spin fa-2x" style="color:var(--primary)"></i></div>';
+  modal.show();
+  try {
+    var r = await apiFetch('/api/admin/buyers/' + uid);
+    if (!r.ok) { document.getElementById('buyer-modal-body').innerHTML = '<p class="text-danger text-center py-3">Failed to load buyer details.</p>'; return; }
+    var d = await r.json();
+    var u = d.user || {};
+    var orders = d.orders || [];
+
+    var html = '<div class="d-flex align-items-center gap-3 mb-3">'
+      + '<div style="width:52px;height:52px;border-radius:50%;background:var(--info-light);color:var(--info);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:700">' + (u.name||'?').slice(0,2).toUpperCase() + '</div>'
+      + '<div><div class="fw-700">' + (u.name||'—') + '</div><div class="text-muted small">' + (u.email||'') + '</div></div>'
+      + '</div>'
+      + '<div class="row g-2 mb-3">'
+      + '<div class="col-6"><div class="detail-stat"><div class="val">' + (d.total_orders||0) + '</div><div class="lbl">Total Orders</div></div></div>'
+      + '<div class="col-6"><div class="detail-stat"><div class="val">$' + parseFloat(d.total_spent||0).toFixed(2) + '</div><div class="lbl">Total Spent</div></div></div>'
+      + '</div>';
+
+    if (!orders.length) {
+      html += '<p class="text-muted text-center py-3">No orders placed yet.</p>';
+    } else {
+      var STATUS_CLR = { processing:'var(--warning)', shipped:'var(--info)', delivered:'var(--success)', cancelled:'var(--danger)', pending:'var(--gray-400)' };
+      html += '<h6 class="fw-700 mb-2"><i class="fa-solid fa-truck me-2 text-primary"></i>Order History</h6>'
+        + '<div class="d-flex flex-column gap-2" style="max-height:320px;overflow-y:auto">'
+        + orders.map(function(o) {
+            var clr  = STATUS_CLR[o.status] || 'var(--primary)';
+            var date = o.created_at ? o.created_at.split('T')[0] : '—';
+            var items = o.items || [];
+            return '<div class="order-mini-row">'
+              + '<div class="d-flex justify-content-between align-items-center mb-1">'
+              + '<span class="fw-600">' + (o.order_number||'#'+o.id) + '</span>'
+              + '<span style="background:' + clr + '18;color:' + clr + ';border:1px solid ' + clr + '30;border-radius:50px;padding:.1rem .7rem;font-size:.72rem;font-weight:600">' + (o.status||'—') + '</span>'
+              + '</div>'
+              + '<div class="d-flex justify-content-between align-items-center">'
+              + '<div class="text-muted" style="font-size:.75rem">' + date + (items.length ? ' · ' + items.length + ' item' + (items.length!==1?'s':'') : '') + '</div>'
+              + '<div class="fw-700 text-primary">$' + parseFloat(o.total||0).toFixed(2) + '</div>'
+              + '</div>'
+              + (items.length ? '<div class="d-flex gap-1 flex-wrap mt-1">' + items.slice(0,3).map(function(it){ return '<span style="background:var(--gray-100);border-radius:6px;padding:.1rem .5rem;font-size:.72rem">' + (it.product_name||it.name||'Item') + ' ×' + (it.quantity||1) + '</span>'; }).join('') + (items.length>3?'<span style="background:var(--gray-100);border-radius:6px;padding:.1rem .5rem;font-size:.72rem">+' + (items.length-3) + ' more</span>':'') + '</div>' : '')
+              + '</div>';
+          }).join('')
+        + '</div>';
+    }
+
+    document.getElementById('buyer-modal-body').innerHTML = html;
+  } catch(e) {
+    document.getElementById('buyer-modal-body').innerHTML = '<p class="text-danger text-center py-3">Error loading data.</p>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadUsers);
+</script>
+</body>
+</html>

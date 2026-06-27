@@ -1,0 +1,469 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcomX — Shop Smart, Ship Fast</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="assets/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── NAVBAR ── -->
+<nav class="navbar navbar-main navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">Ecom<span>X</span></a>
+
+    <div class="navbar-search d-none d-lg-block mx-3">
+      <i class="fa-solid fa-magnifying-glass search-icon"></i>
+      <input type="text" placeholder="Search products, brands, categories...">
+    </div>
+
+    <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mt-2 mt-lg-0">
+        <li class="nav-item"><a class="nav-link active" href="index.html">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="products.html">Products</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">Categories</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="products.html?cat=electronics"><i class="fa-solid fa-mobile-screen-button me-2 text-primary"></i>Electronics</a></li>
+            <li><a class="dropdown-item" href="products.html?cat=fashion"><i class="fa-solid fa-shirt me-2 text-warning"></i>Fashion</a></li>
+            <li><a class="dropdown-item" href="products.html?cat=home"><i class="fa-solid fa-house me-2 text-success"></i>Home & Garden</a></li>
+            <li><a class="dropdown-item" href="products.html?cat=beauty"><i class="fa-solid fa-spa me-2 text-danger"></i>Beauty</a></li>
+            <li><a class="dropdown-item" href="products.html?cat=sports"><i class="fa-solid fa-dumbbell me-2 text-info"></i>Sports</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="deals.html">Deals</a></li>
+        <li class="nav-item"><a class="nav-link" href="track-order.html">Track Order</a></li>
+      </ul>
+
+      <div class="d-flex align-items-center gap-2 mt-2 mt-lg-0">
+        <a href="cart.html" class="cart-btn position-relative" title="Cart">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-badge" id="cart-count" style="display:none">0</span>
+        </a>
+        <!-- User menu (shown when logged in) -->
+        <div class="dropdown" id="nav-user-menu" style="display:none">
+          <button class="btn btn-sm d-flex align-items-center gap-2 px-3" style="background:var(--primary);color:#fff;border-radius:50px;font-family:var(--font)" data-bs-toggle="dropdown">
+            <span class="nav-user-initials fw-bold"></span>
+            <span class="nav-user-name"></span>
+            <i class="fa-solid fa-chevron-down small ms-1"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end nav-user-dropdown shadow" style="min-width:220px"></ul>
+        </div>
+        <!-- Auth buttons (shown when logged out) -->
+        <a href="login.html" class="btn btn-secondary-outline btn-sm" id="nav-login-btn">Login</a>
+        <a href="register.html" class="btn btn-primary btn-sm" id="nav-register-btn">Sign Up</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ── HERO ── -->
+<section class="hero">
+  <div class="container position-relative" style="z-index:1">
+    <div class="row align-items-center gy-5">
+      <div class="col-lg-6">
+        <span class="tag-label">🔥 New Arrivals Every Day</span>
+        <h1 class="hero-title">Shop Smart,<br><span>Ship Fast</span></h1>
+        <p class="hero-subtitle">Discover thousands of products from verified sellers. Best prices, genuine products, lightning-fast delivery.</p>
+
+        <div class="hero-search">
+          <i class="fa-solid fa-magnifying-glass text-muted me-2"></i>
+          <input type="text" placeholder="What are you looking for?">
+          <button onclick="window.location.href='products.html'">Search</button>
+        </div>
+
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">50K+</div>
+            <div class="hero-stat-label">Products</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">12K+</div>
+            <div class="hero-stat-label">Happy Customers</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">500+</div>
+            <div class="hero-stat-label">Sellers</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6 text-center">
+        <div class="hero-img-card">
+          <div class="row g-3">
+            <div class="col-6">
+              <div class="bg-white rounded-3 p-3 shadow-sm">
+                <div style="font-size:2.5rem">📱</div>
+                <div class="text-dark fw-600 small mt-1">Electronics</div>
+                <div class="text-muted" style="font-size:.75rem">2,400+ items</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="bg-white rounded-3 p-3 shadow-sm">
+                <div style="font-size:2.5rem">👗</div>
+                <div class="text-dark fw-600 small mt-1">Fashion</div>
+                <div class="text-muted" style="font-size:.75rem">8,100+ items</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="bg-white rounded-3 p-3 shadow-sm">
+                <div style="font-size:2.5rem">🏠</div>
+                <div class="text-dark fw-600 small mt-1">Home & Garden</div>
+                <div class="text-muted" style="font-size:.75rem">3,600+ items</div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="bg-white rounded-3 p-3 shadow-sm">
+                <div style="font-size:2.5rem">💄</div>
+                <div class="text-dark fw-600 small mt-1">Beauty</div>
+                <div class="text-muted" style="font-size:.75rem">1,800+ items</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── CATEGORIES ── -->
+<section class="section-pad-sm bg-white">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="tag-label">Browse By Category</span>
+      <h2 class="section-title">Shop By Category</h2>
+      <div class="section-title-line mx-auto"></div>
+    </div>
+    <div class="row g-3 row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-6">
+      <div class="col">
+        <a href="products.html?cat=electronics" class="category-card text-decoration-none">
+          <div class="category-icon" style="background:#e0e7ff"><span style="font-size:1.5rem">📱</span></div>
+          <div class="category-name">Electronics</div>
+          <div class="category-count">2,400 items</div>
+        </a>
+      </div>
+      <div class="col">
+        <a href="products.html?cat=fashion" class="category-card text-decoration-none">
+          <div class="category-icon" style="background:#fef3c7"><span style="font-size:1.5rem">👗</span></div>
+          <div class="category-name">Fashion</div>
+          <div class="category-count">8,100 items</div>
+        </a>
+      </div>
+      <div class="col">
+        <a href="products.html?cat=home" class="category-card text-decoration-none">
+          <div class="category-icon" style="background:#d1fae5"><span style="font-size:1.5rem">🏠</span></div>
+          <div class="category-name">Home & Garden</div>
+          <div class="category-count">3,600 items</div>
+        </a>
+      </div>
+      <div class="col">
+        <a href="products.html?cat=beauty" class="category-card text-decoration-none">
+          <div class="category-icon" style="background:#fce7f3"><span style="font-size:1.5rem">💄</span></div>
+          <div class="category-name">Beauty</div>
+          <div class="category-count">1,800 items</div>
+        </a>
+      </div>
+      <div class="col">
+        <a href="products.html?cat=sports" class="category-card text-decoration-none">
+          <div class="category-icon" style="background:#dbeafe"><span style="font-size:1.5rem">⚽</span></div>
+          <div class="category-name">Sports</div>
+          <div class="category-count">1,200 items</div>
+        </a>
+      </div>
+      <div class="col">
+        <a href="products.html?cat=toys" class="category-card text-decoration-none">
+          <div class="category-icon" style="background:#fee2e2"><span style="font-size:1.5rem">🧸</span></div>
+          <div class="category-name">Toys & Kids</div>
+          <div class="category-count">950 items</div>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURED PRODUCTS ── -->
+<section class="section-pad">
+  <div class="container">
+    <div class="d-flex align-items-end justify-content-between mb-4 flex-wrap gap-2">
+      <div>
+        <span class="tag-label">Handpicked For You</span>
+        <h2 class="section-title mb-0">Featured Products</h2>
+        <div class="section-title-line"></div>
+      </div>
+      <a href="products.html" class="btn btn-secondary-outline btn-sm">View All <i class="fa-solid fa-arrow-right ms-1"></i></a>
+    </div>
+
+    <div class="row g-3 row-cols-2 row-cols-md-3 row-cols-lg-4" id="featured-grid">
+      <div class="col-12 text-center py-5">
+        <i class="fa-solid fa-spinner fa-spin fa-2x" style="color:var(--primary)"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROMO BANNER ── -->
+<section class="section-pad-sm">
+  <div class="container">
+    <div class="promo-banner">
+      <div class="row align-items-center">
+        <div class="col-lg-7" style="position:relative;z-index:1">
+          <p class="mb-1" style="font-size:.875rem;opacity:.85;font-weight:500">Limited Time Offer 🔥</p>
+          <h2 class="fw-800 mb-2" style="font-size:2rem">Up to 50% OFF</h2>
+          <p class="mb-3" style="opacity:.85;font-size:.95rem">On all electronics, fashion & beauty products. Use code <strong>ECOMX50</strong> at checkout.</p>
+          <a href="products.html" class="btn btn-dark btn-lg">Shop the Sale <i class="fa-solid fa-arrow-right ms-2"></i></a>
+        </div>
+        <div class="col-lg-5 text-center mt-4 mt-lg-0">
+          <div style="font-size:5rem">🛍️</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── WHY ECOMX ── -->
+<section class="section-pad bg-white">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="tag-label">Why Choose Us</span>
+      <h2 class="section-title">The EcomX Advantage</h2>
+      <div class="section-title-line mx-auto"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#e0e7ff">
+            <i class="fa-solid fa-truck-fast" style="color:#4f46e5"></i>
+          </div>
+          <h5 class="feature-title">Fast Delivery</h5>
+          <p class="feature-desc">Get your orders delivered within 2-5 business days with real-time tracking.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#d1fae5">
+            <i class="fa-solid fa-shield-halved" style="color:#10b981"></i>
+          </div>
+          <h5 class="feature-title">Secure Payments</h5>
+          <p class="feature-desc">Shop with confidence. All transactions are encrypted and protected.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#fef3c7">
+            <i class="fa-solid fa-rotate-left" style="color:#f59e0b"></i>
+          </div>
+          <h5 class="feature-title">Easy Returns</h5>
+          <p class="feature-desc">Not satisfied? Return within 30 days, hassle-free, no questions asked.</p>
+        </div>
+      </div>
+      <div class="col-md-6 col-lg-3">
+        <div class="feature-card">
+          <div class="feature-icon" style="background:#fee2e2">
+            <i class="fa-solid fa-headset" style="color:#ef4444"></i>
+          </div>
+          <h5 class="feature-title">24/7 Support</h5>
+          <p class="feature-desc">Our dedicated support team is available around the clock for you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── TESTIMONIALS ── -->
+<section class="section-pad">
+  <div class="container">
+    <div class="section-header text-center">
+      <span class="tag-label">Customer Reviews</span>
+      <h2 class="section-title">What Our Customers Say</h2>
+      <div class="section-title-line mx-auto"></div>
+    </div>
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <div class="stars mb-2">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"Amazing shopping experience! Got my AirPods in just 3 days. The packaging was perfect and the product is 100% genuine. EcomX is now my go-to online store!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">AS</div>
+            <div>
+              <div class="author-name">Ahmed Siddiqui</div>
+              <div class="author-role">Verified Buyer • Electronics</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <div class="stars mb-2">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+          </div>
+          <p class="testimonial-text">"I've been a seller on EcomX for 6 months and the seller dashboard is incredibly easy to use. Sales have gone up 3x since I started. Highly recommend for new sellers!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">FA</div>
+            <div>
+              <div class="author-name">Fatima Al-Rasheed</div>
+              <div class="author-role">Verified Seller • Fashion</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="testimonial-card">
+          <div class="stars mb-2">
+            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+          </div>
+          <p class="testimonial-text">"The return process was super smooth. I returned a dress that didn't fit and got a full refund in 2 days. Customer service was so helpful and responsive!"</p>
+          <div class="testimonial-author">
+            <div class="author-avatar">SK</div>
+            <div>
+              <div class="author-name">Sara Khan</div>
+              <div class="author-role">Verified Buyer • Fashion</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── NEWSLETTER ── -->
+<section class="newsletter-section">
+  <div class="container text-center">
+    <span class="tag-label" style="background:rgba(255,255,255,.15);color:white">Stay Updated</span>
+    <h2 class="fw-700 mt-2 mb-2" style="font-size:1.85rem">Get Exclusive Deals in Your Inbox</h2>
+    <p class="mb-4" style="opacity:.75;font-size:.95rem">Subscribe to our newsletter and be the first to know about sales, new arrivals and more.</p>
+    <div class="d-flex justify-content-center">
+      <div class="newsletter-form">
+        <input type="email" placeholder="Enter your email address">
+        <button>Subscribe</button>
+      </div>
+    </div>
+    <p class="mt-3" style="font-size:.75rem;opacity:.5">No spam, unsubscribe anytime. We respect your privacy.</p>
+  </div>
+</section>
+
+<!-- ── FOOTER ── -->
+<footer class="footer">
+  <div class="container">
+    <div class="row g-4">
+      <div class="col-lg-4 col-md-6">
+        <div class="footer-logo">Ecom<span>X</span></div>
+        <p class="footer-tagline">Your one-stop dropshipping platform. Connecting customers with the best sellers worldwide.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <div class="footer-heading">Shop</div>
+        <ul class="footer-links">
+          <li><a href="products.html">All Products</a></li>
+          <li><a href="#">Electronics</a></li>
+          <li><a href="#">Fashion</a></li>
+          <li><a href="#">Home & Garden</a></li>
+          <li><a href="#">Beauty</a></li>
+          <li><a href="#">Sports</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <div class="footer-heading">Account</div>
+        <ul class="footer-links">
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+          <li><a href="customer/dashboard.html">My Dashboard</a></li>
+          <li><a href="customer/orders.html">My Orders</a></li>
+          <li><a href="cart.html">My Cart</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <div class="footer-heading">Sell on EcomX</div>
+        <ul class="footer-links">
+          <li><a href="register.html">Become a Seller</a></li>
+          <li><a href="seller/dashboard.html">Seller Dashboard</a></li>
+          <li><a href="#">Seller Guidelines</a></li>
+          <li><a href="#">Fees & Pricing</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-2 col-md-3 col-6">
+        <div class="footer-heading">Support</div>
+        <ul class="footer-links">
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Shipping Info</a></li>
+          <li><a href="#">Returns</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 EcomX. All rights reserved. Built for Final Year Project.</p>
+      <div class="d-flex gap-3">
+        <img src="https://placehold.co/40x24/334155/94a3b8?text=VISA" alt="Visa" style="border-radius:4px;height:22px">
+        <img src="https://placehold.co/40x24/334155/94a3b8?text=MC" alt="Mastercard" style="border-radius:4px;height:22px">
+        <img src="https://placehold.co/40x24/334155/94a3b8?text=PP" alt="PayPal" style="border-radius:4px;height:22px">
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/main.js"></script>
+<script>
+(async function loadFeatured() {
+  var grid = document.getElementById('featured-grid');
+  if (!grid) return;
+  try {
+    var data = await api.get('/api/products/');
+    var products = (data.products || []).slice(0, 8);
+    if (!products.length) {
+      grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">No products available yet.</div>';
+      return;
+    }
+    var BASE = api.BASE || '';
+    grid.innerHTML = products.map(function(p) {
+      var img = (p.imgs && p.imgs[0]) ? (p.imgs[0].startsWith('http') ? p.imgs[0] : BASE + p.imgs[0]) : '';
+      var imgHtml = img
+        ? '<img src="' + img + '" alt="' + (p.name||'').replace(/"/g,'') + '" style="width:100%;height:100%;object-fit:cover">'
+        : '<div style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--gray-100)"><i class="fa-solid fa-image fa-2x" style="color:var(--gray-300)"></i></div>';
+      var badge = p.discount > 0 ? '<span class="product-card-badge badge-sale">-' + p.discount + '%</span>' : '';
+      var stars = '';
+      var r = Math.round(p.rating || 0);
+      for (var i = 1; i <= 5; i++) stars += '<i class="fa-' + (i <= r ? 'solid' : 'regular') + ' fa-star"></i>';
+      var priceHtml = '<span class="price-current">$' + parseFloat(p.price).toFixed(2) + '</span>';
+      if (p.original_price) priceHtml += '<span class="price-original">$' + parseFloat(p.original_price).toFixed(2) + '</span>'
+        + '<span class="price-discount">-' + (p.discount || 0) + '%</span>';
+      return '<div class="col"><div class="product-card">'
+        + '<div class="product-card-img">' + imgHtml + badge
+        + '<div class="product-card-actions">'
+        + '<button class="action-btn" title="Wishlist" onclick="Wishlist&&Wishlist.toggle({id:' + p.id + ',name:' + JSON.stringify(p.name) + ',price:' + p.price + '})"><i class="fa-regular fa-heart"></i></button>'
+        + '<button class="action-btn" title="View" onclick="window.location.href=\'product-detail.html?id=' + p.id + '\'"><i class="fa-regular fa-eye"></i></button>'
+        + '</div></div>'
+        + '<div class="product-card-body">'
+        + '<div class="product-category-tag">' + (p.category || '') + '</div>'
+        + '<div class="product-title" onclick="window.location.href=\'product-detail.html?id=' + p.id + '\'" style="cursor:pointer">' + (p.name || '') + '</div>'
+        + (p.rating ? '<div class="product-rating"><span class="stars">' + stars + '</span><span class="text-dark fw-500">' + parseFloat(p.rating).toFixed(1) + '</span><span class="rating-count">(' + (p.review_count || p.reviews || 0) + ')</span></div>' : '')
+        + '<div class="product-price-row">' + priceHtml + '</div>'
+        + '<button class="btn-add-cart" data-id="' + p.id + '" data-name="' + (p.name||'').replace(/"/g,'') + '" data-price="' + p.price + '" data-img="' + ((p.imgs && p.imgs[0]) || '') + '">'
+        + '<i class="fa-solid fa-bag-shopping"></i> Add to Cart</button>'
+        + '</div></div></div>';
+    }).join('');
+  } catch(e) {
+    grid.innerHTML = '<div class="col-12 text-center py-5 text-muted">Could not load products.</div>';
+  }
+})();
+</script>
+</body>
+</html>

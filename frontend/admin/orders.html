@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orders — EcomX Admin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+<script>(function(){var u=null;try{u=JSON.parse(localStorage.getItem('ecomx_user')||'null');}catch(e){}if(!u||u.role!=='admin'){window.location.replace('../login.html');}})();</script>
+  <style>
+    .status-filter-btn { background:none; border:1.5px solid var(--border); border-radius:50px; padding:.3rem .9rem; font-family:var(--font); font-size:.78rem; font-weight:500; color:var(--gray-500); cursor:pointer; transition:all .2s; }
+    .status-filter-btn.active { background:var(--primary); border-color:var(--primary); color:#fff; }
+    .order-row-expand { display:none; background:var(--gray-100); }
+    .order-row-expand.open { display:table-row; }
+    .status-select { font-family:var(--font); font-size:.78rem; border:1.5px solid var(--border); border-radius:6px; padding:.25rem .5rem; cursor:pointer; background:#fff; }
+    .status-select:focus { outline:none; border-color:var(--primary); }
+  </style>
+</head>
+<body>
+
+<nav class="navbar navbar-main navbar-expand-lg">
+  <div class="container-fluid px-4">
+    <button id="sidebar-toggle" class="btn btn-sm me-3 d-lg-none" style="border:1.5px solid var(--border)"><i class="fa-solid fa-bars"></i></button>
+    <a class="navbar-brand" href="../index.html">Ecom<span>X</span> <span class="badge ms-1" style="background:var(--danger);font-size:.6rem;padding:.25rem .5rem;border-radius:4px;font-weight:600;vertical-align:middle">ADMIN</span></a>
+    <div class="ms-auto d-flex align-items-center gap-2">
+      <div class="avatar-sm" style="background:var(--danger);color:white;width:36px;height:36px;border-radius:50%">AD</div>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" style="background:var(--danger)">AD</div>
+      <div class="sidebar-user-name">Super Admin</div>
+      <div class="sidebar-user-role">System Administrator</div>
+    </div>
+    <span class="sidebar-section-label">Overview</span>
+    <ul class="sidebar-nav"><li><a href="dashboard.html"><i class="fa-solid fa-gauge"></i>Dashboard</a></li></ul>
+    <span class="sidebar-section-label">Management</span>
+    <ul class="sidebar-nav">
+      <li><a href="users.html"><i class="fa-solid fa-users"></i>Users</a></li>
+      <li><a href="products.html"><i class="fa-solid fa-box-open"></i>Products</a></li>
+      <li><a href="orders.html" class="active"><i class="fa-solid fa-truck"></i>Orders</a></li>
+      <li><a href="#"><i class="fa-solid fa-store"></i>Sellers</a></li>
+      <li><a href="#"><i class="fa-solid fa-tags"></i>Categories</a></li>
+      <li><a href="#"><i class="fa-solid fa-percent"></i>Coupons</a></li>
+    </ul>
+    <div class="sidebar-bottom"><a href="../login.html" class="sidebar-logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="page-header d-flex align-items-start justify-content-between flex-wrap gap-2">
+      <div>
+        <h1 class="page-title">Order Management</h1>
+        <p class="page-subtitle" id="orders-subtitle">Loading orders…</p>
+      </div>
+    </div>
+
+    <!-- Status Stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--warning-light);width:40px;height:40px;font-size:.9rem"><i class="fa-solid fa-clock" style="color:#92400e"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem" id="stat-pending">—</div><div class="stat-label">Pending</div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--info-light);width:40px;height:40px;font-size:.9rem"><i class="fa-solid fa-gear" style="color:var(--info)"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem" id="stat-processing">—</div><div class="stat-label">Processing</div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--secondary-light);width:40px;height:40px;font-size:.9rem"><i class="fa-solid fa-truck" style="color:#92400e"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem" id="stat-shipped">—</div><div class="stat-label">Shipped</div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--success-light);width:40px;height:40px;font-size:.9rem"><i class="fa-solid fa-circle-check" style="color:var(--success)"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem" id="stat-delivered">—</div><div class="stat-label">Delivered</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="d-flex gap-2 mb-3 flex-wrap align-items-center">
+      <button class="status-filter-btn active" onclick="filterOrders('all', this)"><i class="fa-solid fa-list me-1"></i>All</button>
+      <button class="status-filter-btn" onclick="filterOrders('pending', this)"><i class="fa-solid fa-clock me-1"></i>Pending</button>
+      <button class="status-filter-btn" onclick="filterOrders('processing', this)"><i class="fa-solid fa-gear me-1"></i>Processing</button>
+      <button class="status-filter-btn" onclick="filterOrders('shipped', this)"><i class="fa-solid fa-truck me-1"></i>Shipped</button>
+      <button class="status-filter-btn" onclick="filterOrders('delivered', this)"><i class="fa-solid fa-circle-check me-1"></i>Delivered</button>
+      <button class="status-filter-btn" onclick="filterOrders('cancelled', this)"><i class="fa-solid fa-times-circle me-1"></i>Cancelled</button>
+      <div class="ms-auto position-relative" style="min-width:220px">
+        <i class="fa-solid fa-magnifying-glass position-absolute" style="left:.75rem;top:50%;transform:translateY(-50%);color:var(--gray-400);font-size:.8rem"></i>
+        <input type="text" id="order-search" class="form-control" style="padding-left:2.25rem;font-size:.875rem" placeholder="Search order # or customer…" oninput="renderOrdersTable()">
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="data-card">
+      <div class="data-card-header">
+        <div class="data-card-title">All Orders <span class="badge ms-2" style="background:var(--primary-light);color:var(--primary);font-weight:500" id="orders-count-badge">…</span></div>
+        <span style="font-size:.8rem;color:var(--gray-400)">Total Revenue: <strong style="color:var(--primary)" id="orders-total-revenue">—</strong></span>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table" id="orders-table" style="min-width:860px">
+          <thead>
+            <tr>
+              <th style="width:30px"></th>
+              <th>Order #</th>
+              <th>Customer</th>
+              <th>Items</th>
+              <th>Total</th>
+              <th>Status</th>
+              <th>Date</th>
+              <th>Update Status</th>
+            </tr>
+          </thead>
+          <tbody id="orders-tbody">
+            <tr><td colspan="8" class="text-center py-5"><i class="fa-solid fa-spinner fa-spin me-2"></i>Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="data-card-header" style="border-top:1px solid var(--border);border-bottom:none">
+        <div style="font-size:.8rem;color:var(--gray-400)" id="orders-showing">—</div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+var API_BASE = (location.protocol === 'file:') ? 'http://localhost:5000' : location.origin;
+var _allOrders = [];
+var _activeStatus = 'all';
+
+function getToken() { return localStorage.getItem('ecomx_token'); }
+
+async function apiFetch(path, opts) {
+  var res = await fetch(API_BASE + path, Object.assign({ headers: { 'Authorization': 'Bearer ' + getToken(), 'Content-Type': 'application/json' } }, opts || {}));
+  return res;
+}
+
+async function loadOrders() {
+  try {
+    var r = await apiFetch('/api/admin/orders');
+    if (!r.ok) { showOrderError(); return; }
+    var d = await r.json();
+    _allOrders = d.orders || [];
+    updateOrderStats();
+    renderOrdersTable();
+  } catch(e) { showOrderError(); }
+}
+
+function showOrderError() {
+  document.getElementById('orders-tbody').innerHTML = '<tr><td colspan="8" class="text-center py-5 text-danger"><i class="fa-solid fa-triangle-exclamation me-2"></i>Could not load orders. Is the backend running?</td></tr>';
+}
+
+function updateOrderStats() {
+  var counts = { pending:0, processing:0, shipped:0, delivered:0, cancelled:0 };
+  var total = 0;
+  _allOrders.forEach(function(o) { if (counts[o.status] !== undefined) counts[o.status]++; total += parseFloat(o.total||0); });
+  document.getElementById('stat-pending').textContent    = counts.pending;
+  document.getElementById('stat-processing').textContent = counts.processing;
+  document.getElementById('stat-shipped').textContent    = counts.shipped;
+  document.getElementById('stat-delivered').textContent  = counts.delivered;
+  document.getElementById('orders-subtitle').textContent = 'Monitor and manage all platform orders — ' + _allOrders.length + ' total';
+  document.getElementById('orders-total-revenue').textContent = '$' + total.toFixed(2);
+}
+
+function filterOrders(status, btn) {
+  _activeStatus = status;
+  document.querySelectorAll('.status-filter-btn').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderOrdersTable();
+}
+
+function renderOrdersTable() {
+  var search = (document.getElementById('order-search').value || '').toLowerCase();
+  var filtered = _allOrders.filter(function(o) {
+    if (_activeStatus !== 'all' && o.status !== _activeStatus) return false;
+    if (search) {
+      var num   = (o.order_number || String(o.id) || '').toLowerCase();
+      var cust  = (o.customer_name || o.customer_email || '').toLowerCase();
+      if (!num.includes(search) && !cust.includes(search)) return false;
+    }
+    return true;
+  });
+
+  document.getElementById('orders-count-badge').textContent = filtered.length;
+  document.getElementById('orders-showing').textContent = 'Showing ' + filtered.length + ' of ' + _allOrders.length + ' orders';
+
+  if (!filtered.length) {
+    document.getElementById('orders-tbody').innerHTML = '<tr><td colspan="8" class="text-center py-5 text-muted">No orders found</td></tr>';
+    return;
+  }
+
+  var STATUS_BADGE = { pending:'badge-pending', processing:'badge-processing', shipped:'badge-shipped', delivered:'badge-delivered', cancelled:'badge-cancelled' };
+  var VALID_STATUSES = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
+
+  var rows = '';
+  filtered.forEach(function(o) {
+    var badge  = STATUS_BADGE[o.status] || 'badge-pending';
+    var date   = o.created_at ? o.created_at.split('T')[0] : '—';
+    var num    = o.order_number || ('#' + o.id);
+    var cust   = o.customer_name || o.customer_email || 'Customer';
+    var custEmail = o.customer_email || '';
+    var items  = o.items || [];
+    var itemSummary = items.length
+      ? items.slice(0,2).map(function(it){ return (it.product_name||it.name||'Item') + ' \xd7' + (it.quantity||1); }).join(', ') + (items.length > 2 ? ' +' + (items.length-2) + ' more' : '')
+      : '—';
+
+    var selectOpts = VALID_STATUSES.map(function(s) {
+      return '<option value="' + s + '"' + (s === o.status ? ' selected' : '') + '>' + s.charAt(0).toUpperCase() + s.slice(1) + '</option>';
+    }).join('');
+
+    rows += '<tr onclick="toggleExpand(' + o.id + ', event)" style="cursor:pointer">'
+      + '<td><i class="fa-solid fa-chevron-right" id="expand-icon-' + o.id + '" style="font-size:.7rem;color:var(--gray-400);transition:transform .2s"></i></td>'
+      + '<td class="fw-700">' + num + '</td>'
+      + '<td><div style="font-size:.875rem;font-weight:500">' + cust + '</div><div class="text-muted" style="font-size:.75rem">' + custEmail + '</div></td>'
+      + '<td style="font-size:.8rem;color:var(--gray-500);max-width:180px">' + itemSummary + '</td>'
+      + '<td class="fw-700">$' + parseFloat(o.total||0).toFixed(2) + '</td>'
+      + '<td><span class="status-badge ' + badge + '">' + (o.status||'—') + '</span></td>'
+      + '<td style="font-size:.825rem;color:var(--gray-500)">' + date + '</td>'
+      + '<td onclick="event.stopPropagation()">'
+      + '<select class="status-select" onchange="updateOrderStatus(' + o.id + ', this)">' + selectOpts + '</select>'
+      + '</td>'
+      + '</tr>';
+
+    // Expanded items row
+    rows += '<tr class="order-row-expand" id="expand-row-' + o.id + '">'
+      + '<td colspan="8">'
+      + '<div class="p-3">';
+
+    if (items.length) {
+      rows += '<div class="fw-600 small mb-2"><i class="fa-solid fa-box-open me-2 text-primary"></i>Order Items</div>'
+        + '<div style="overflow-x:auto"><table class="table table-sm mb-0" style="font-size:.82rem"><thead class="table-light"><tr><th>Product</th><th>Qty</th><th>Unit Price</th><th>Subtotal</th></tr></thead><tbody>'
+        + items.map(function(it) {
+            var name = it.product_name || it.name || 'Item';
+            var qty  = it.quantity || 1;
+            var price = parseFloat(it.price || 0);
+            return '<tr><td>' + name + '</td><td>' + qty + '</td><td>$' + price.toFixed(2) + '</td><td class="fw-600">$' + (price * qty).toFixed(2) + '</td></tr>';
+          }).join('')
+        + '</tbody></table></div>';
+    } else {
+      rows += '<p class="text-muted mb-0 small">No item details available.</p>';
+    }
+
+    if (o.shipping_address) {
+      var addr = o.shipping_address;
+      var addrStr = typeof addr === 'object'
+        ? [addr.name, addr.street, addr.city, addr.state, addr.zip, addr.country].filter(Boolean).join(', ')
+        : String(addr);
+      rows += '<div class="mt-2 small text-muted"><i class="fa-solid fa-location-dot me-1"></i>' + addrStr + '</div>';
+    }
+
+    rows += '</div></td></tr>';
+  });
+
+  document.getElementById('orders-tbody').innerHTML = rows;
+}
+
+function toggleExpand(oid, e) {
+  var row  = document.getElementById('expand-row-' + oid);
+  var icon = document.getElementById('expand-icon-' + oid);
+  if (!row) return;
+  var isOpen = row.classList.contains('open');
+  row.classList.toggle('open', !isOpen);
+  if (icon) icon.style.transform = isOpen ? '' : 'rotate(90deg)';
+}
+
+async function updateOrderStatus(oid, sel) {
+  var newStatus = sel.value;
+  sel.disabled = true;
+  try {
+    var r = await apiFetch('/api/admin/orders/' + oid + '/status', {
+      method: 'PUT',
+      body: JSON.stringify({ status: newStatus })
+    });
+    if (r.ok) {
+      var o = _allOrders.find(function(x){ return x.id === oid; });
+      if (o) o.status = newStatus;
+      updateOrderStats();
+      // Update the badge in this row without full re-render
+      var tr = sel.closest('tr');
+      if (tr) {
+        var badgeEl = tr.querySelector('.status-badge');
+        if (badgeEl) {
+          var STATUS_BADGE = { pending:'badge-pending', processing:'badge-processing', shipped:'badge-shipped', delivered:'badge-delivered', cancelled:'badge-cancelled' };
+          badgeEl.className = 'status-badge ' + (STATUS_BADGE[newStatus] || 'badge-pending');
+          badgeEl.textContent = newStatus;
+        }
+      }
+      if (typeof Toast !== 'undefined') Toast.show('Order status updated to "' + newStatus + '".', 'success');
+    } else {
+      if (typeof Toast !== 'undefined') Toast.show('Failed to update order status.', 'error');
+      // Revert select
+      var o2 = _allOrders.find(function(x){ return x.id === oid; });
+      if (o2) sel.value = o2.status;
+    }
+  } catch(e) {
+    if (typeof Toast !== 'undefined') Toast.show('Network error.', 'error');
+  }
+  sel.disabled = false;
+}
+
+document.addEventListener('DOMContentLoaded', loadOrders);
+</script>
+</body>
+</html>

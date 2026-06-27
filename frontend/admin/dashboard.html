@@ -1,0 +1,343 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — EcomX</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="../assets/css/style.css" rel="stylesheet">
+<script>(function(){var u=null;try{u=JSON.parse(localStorage.getItem('ecomx_user')||'null');}catch(e){}if(!u||u.role!=='admin'){window.location.replace('../login.html');}})();</script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<nav class="navbar navbar-main navbar-expand-lg">
+  <div class="container-fluid px-4">
+    <button id="sidebar-toggle" class="btn btn-sm me-3 d-lg-none" style="border:1.5px solid var(--border)"><i class="fa-solid fa-bars"></i></button>
+    <a class="navbar-brand" href="../index.html">Ecom<span>X</span> <span class="badge ms-1" style="background:var(--danger);font-size:.6rem;padding:.25rem .5rem;border-radius:4px;font-weight:600;vertical-align:middle">ADMIN</span></a>
+    <div class="ms-auto d-flex align-items-center gap-3">
+      <button class="position-relative" style="background:none;border:none;font-size:1.1rem;color:var(--gray-400);cursor:pointer">
+        <i class="fa-regular fa-bell"></i>
+        <span style="position:absolute;top:-4px;right:-4px;background:var(--danger);color:white;font-size:.6rem;width:14px;height:14px;border-radius:50%;display:flex;align-items:center;justify-content:center">7</span>
+      </button>
+      <div class="dropdown">
+        <button class="btn p-0 border-0 d-flex align-items-center gap-2" data-bs-toggle="dropdown">
+          <div class="avatar-sm" style="background:var(--danger);color:white;width:36px;height:36px;border-radius:50%">AD</div>
+          <span class="d-none d-md-block" style="font-size:.875rem;font-weight:500">Admin</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end shadow">
+          <li><a class="dropdown-item" href="dashboard.html">Dashboard</a></li>
+          <li><a class="dropdown-item text-danger" href="../login.html">Logout</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard-wrapper">
+  <aside class="sidebar">
+    <div class="sidebar-user">
+      <div class="sidebar-avatar" style="background:var(--danger)">AD</div>
+      <div class="sidebar-user-name">Super Admin</div>
+      <div class="sidebar-user-role">System Administrator</div>
+    </div>
+
+    <span class="sidebar-section-label">Overview</span>
+    <ul class="sidebar-nav">
+      <li><a href="dashboard.html" class="active"><i class="fa-solid fa-gauge"></i>Dashboard</a></li>
+      <li><a href="#"><i class="fa-solid fa-chart-bar"></i>Analytics</a></li>
+      <li><a href="#"><i class="fa-solid fa-chart-pie"></i>Reports</a></li>
+    </ul>
+
+    <span class="sidebar-section-label">Management</span>
+    <ul class="sidebar-nav">
+      <li><a href="users.html"><i class="fa-solid fa-users"></i>Users</a></li>
+      <li><a href="products.html"><i class="fa-solid fa-box-open"></i>Products</a></li>
+      <li><a href="orders.html"><i class="fa-solid fa-truck"></i>Orders</a></li>
+      <li><a href="#"><i class="fa-solid fa-store"></i>Sellers</a></li>
+      <li><a href="#"><i class="fa-solid fa-tags"></i>Categories</a></li>
+      <li><a href="#"><i class="fa-solid fa-percent"></i>Coupons</a></li>
+    </ul>
+
+    <span class="sidebar-section-label">System</span>
+    <ul class="sidebar-nav">
+      <li><a href="#"><i class="fa-solid fa-gear"></i>Settings</a></li>
+      <li><a href="#"><i class="fa-solid fa-shield-halved"></i>Security</a></li>
+      <li><a href="#"><i class="fa-solid fa-file-lines"></i>Logs</a></li>
+    </ul>
+
+    <div class="sidebar-bottom">
+      <a href="../login.html" class="sidebar-logout"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</a>
+    </div>
+  </aside>
+
+  <main class="dashboard-main">
+    <div class="page-header d-flex align-items-start justify-content-between flex-wrap gap-2">
+      <div>
+        <h1 class="page-title">Admin Dashboard</h1>
+        <p class="page-subtitle">Platform overview — June 2026</p>
+      </div>
+      <div class="d-flex gap-2">
+        <select class="form-control form-control-sm" style="font-family:var(--font);font-size:.8rem">
+          <option>Last 30 days</option>
+          <option>Last 90 days</option>
+          <option>This Year</option>
+        </select>
+        <button class="btn btn-primary btn-sm"><i class="fa-solid fa-download me-2"></i>Export</button>
+      </div>
+    </div>
+
+    <!-- Stat Cards -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#e0e7ff"><i class="fa-solid fa-users" style="color:#4f46e5"></i></div>
+          <div>
+            <div class="stat-value">12,480</div>
+            <div class="stat-label">Total Users</div>
+            <div class="stat-change up"><i class="fa-solid fa-arrow-trend-up"></i> +234 this week</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fef3c7"><i class="fa-solid fa-store" style="color:#f59e0b"></i></div>
+          <div>
+            <div class="stat-value">512</div>
+            <div class="stat-label">Active Sellers</div>
+            <div class="stat-change up"><i class="fa-solid fa-arrow-trend-up"></i> +18 this month</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#d1fae5"><i class="fa-solid fa-dollar-sign" style="color:#10b981"></i></div>
+          <div>
+            <div class="stat-value">$482K</div>
+            <div class="stat-label">Platform Revenue</div>
+            <div class="stat-change up"><i class="fa-solid fa-arrow-trend-up"></i> +22% vs last month</div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="stat-card">
+          <div class="stat-icon" style="background:#fce7f3"><i class="fa-solid fa-shopping-cart" style="color:#db2777"></i></div>
+          <div>
+            <div class="stat-value">8,742</div>
+            <div class="stat-label">Total Orders</div>
+            <div class="stat-change up"><i class="fa-solid fa-arrow-trend-up"></i> +312 this week</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Second Row Stats -->
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-md-3">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--success-light);width:40px;height:40px;font-size:1rem"><i class="fa-solid fa-box" style="color:var(--success)"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem">50,241</div><div class="stat-label">Total Products</div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--info-light);width:40px;height:40px;font-size:1rem"><i class="fa-solid fa-truck-fast" style="color:var(--info)"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem">342</div><div class="stat-label">Shipping Today</div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--danger-light);width:40px;height:40px;font-size:1rem"><i class="fa-solid fa-rotate-left" style="color:var(--danger)"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem">24</div><div class="stat-label">Return Requests</div></div>
+        </div>
+      </div>
+      <div class="col-6 col-md-3">
+        <div class="stat-card p-3">
+          <div class="stat-icon" style="background:var(--primary-light);width:40px;height:40px;font-size:1rem"><i class="fa-solid fa-star" style="color:var(--primary)"></i></div>
+          <div><div class="stat-value" style="font-size:1.2rem">4.7</div><div class="stat-label">Avg Rating</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="row g-3 mb-4">
+      <div class="col-lg-8">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-card-title">Platform Revenue & Orders</div>
+            <div class="d-flex gap-2 align-items-center">
+              <span class="d-flex align-items-center gap-1" style="font-size:.75rem"><span style="width:12px;height:3px;background:#4f46e5;display:inline-block;border-radius:2px"></span>Revenue</span>
+              <span class="d-flex align-items-center gap-1" style="font-size:.75rem"><span style="width:12px;height:3px;background:#f59e0b;display:inline-block;border-radius:2px"></span>Orders</span>
+            </div>
+          </div>
+          <canvas id="revenueChart" height="110"></canvas>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-card-title">User Distribution</div>
+          </div>
+          <canvas id="userChart" height="180"></canvas>
+          <div class="d-flex flex-column gap-1 mt-2" style="font-size:.8rem">
+            <div class="d-flex align-items-center gap-2"><span style="width:10px;height:10px;border-radius:50%;background:#4f46e5;display:inline-block"></span>Customers 78%</div>
+            <div class="d-flex align-items-center gap-2"><span style="width:10px;height:10px;border-radius:50%;background:#f59e0b;display:inline-block"></span>Sellers 18%</div>
+            <div class="d-flex align-items-center gap-2"><span style="width:10px;height:10px;border-radius:50%;background:#ef4444;display:inline-block"></span>Admins 4%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Row -->
+    <div class="row g-3">
+      <!-- Recent Orders -->
+      <div class="col-lg-7">
+        <div class="data-card">
+          <div class="data-card-header">
+            <div class="data-card-title">Recent Orders</div>
+            <a href="orders.html" class="btn btn-sm btn-secondary-outline">View All</a>
+          </div>
+          <table class="data-table">
+            <thead><tr><th>Order</th><th>Customer</th><th>Seller</th><th>Amount</th><th>Status</th></tr></thead>
+            <tbody>
+              <tr><td class="fw-600">#ECX-78542</td><td>Ahmed S.</td><td>TechZone</td><td class="fw-600">$428.95</td><td><span class="status-badge badge-shipped">Shipped</span></td></tr>
+              <tr><td class="fw-600">#ECX-78501</td><td>Sara K.</td><td>TechZone</td><td class="fw-600">$79.99</td><td><span class="status-badge badge-processing">Processing</span></td></tr>
+              <tr><td class="fw-600">#ECX-78490</td><td>Usman A.</td><td>FashionHub</td><td class="fw-600">$149.00</td><td><span class="status-badge badge-delivered">Delivered</span></td></tr>
+              <tr><td class="fw-600">#ECX-78445</td><td>Amna B.</td><td>TechZone</td><td class="fw-600">$69.99</td><td><span class="status-badge badge-pending">Pending</span></td></tr>
+              <tr><td class="fw-600">#ECX-78420</td><td>Hassan R.</td><td>StyleCo</td><td class="fw-600">$199.99</td><td><span class="status-badge badge-delivered">Delivered</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Recent Users + Top Sellers -->
+      <div class="col-lg-5 d-flex flex-column gap-3">
+        <!-- New Users -->
+        <div class="data-card">
+          <div class="data-card-header">
+            <div class="data-card-title">New Users</div>
+            <a href="users.html" class="btn btn-sm btn-secondary-outline">View All</a>
+          </div>
+          <div class="p-3 d-flex flex-column gap-2">
+            <div class="d-flex align-items-center gap-3"><div class="avatar-sm" style="background:var(--primary-light);color:var(--primary);border-radius:50%;width:36px;height:36px">AS</div><div class="flex-fill"><div style="font-size:.875rem;font-weight:500">Ahmed Siddiqui</div><div class="text-muted" style="font-size:.75rem">Customer · Jun 5</div></div><span class="status-badge badge-customer">Customer</span></div>
+            <div class="d-flex align-items-center gap-3"><div class="avatar-sm" style="background:var(--secondary-light);color:var(--secondary-hover);border-radius:50%;width:36px;height:36px">TZ</div><div class="flex-fill"><div style="font-size:.875rem;font-weight:500">TechZone Store</div><div class="text-muted" style="font-size:.75rem">Seller · Jun 4</div></div><span class="status-badge badge-seller">Seller</span></div>
+            <div class="d-flex align-items-center gap-3"><div class="avatar-sm" style="background:var(--success-light);color:var(--success);border-radius:50%;width:36px;height:36px">SK</div><div class="flex-fill"><div style="font-size:.875rem;font-weight:500">Sara Khan</div><div class="text-muted" style="font-size:.75rem">Customer · Jun 3</div></div><span class="status-badge badge-customer">Customer</span></div>
+          </div>
+        </div>
+
+        <!-- Top Sellers -->
+        <div class="data-card">
+          <div class="data-card-header">
+            <div class="data-card-title">Top Sellers</div>
+          </div>
+          <div class="p-3 d-flex flex-column gap-2">
+            <div class="d-flex align-items-center gap-3"><div class="avatar-sm" style="background:var(--secondary-light);color:var(--secondary-hover);border-radius:50%;width:36px;height:36px;font-size:.75rem">TZ</div><div class="flex-fill"><div style="font-size:.875rem;font-weight:500">TechZone Store</div><div class="progress mt-1" style="height:4px"><div class="progress-bar" style="width:87%;background:var(--primary)"></div></div></div><div class="fw-700 text-primary" style="font-size:.875rem">$12.4K</div></div>
+            <div class="d-flex align-items-center gap-3"><div class="avatar-sm" style="background:var(--success-light);color:var(--success);border-radius:50%;width:36px;height:36px;font-size:.75rem">FH</div><div class="flex-fill"><div style="font-size:.875rem;font-weight:500">FashionHub</div><div class="progress mt-1" style="height:4px"><div class="progress-bar" style="width:64%;background:var(--secondary)"></div></div></div><div class="fw-700 text-primary" style="font-size:.875rem">$9.1K</div></div>
+            <div class="d-flex align-items-center gap-3"><div class="avatar-sm" style="background:var(--info-light);color:var(--info);border-radius:50%;width:36px;height:36px;font-size:.75rem">SC</div><div class="flex-fill"><div style="font-size:.875rem;font-weight:500">StyleCo</div><div class="progress mt-1" style="height:4px"><div class="progress-bar" style="width:48%;background:var(--success)"></div></div></div><div class="fw-700 text-primary" style="font-size:.875rem">$6.8K</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="../assets/js/main.js"></script>
+<script>
+/* ── Live Stats from API ── */
+(async function loadDashboardStats() {
+  var API_BASE = (location.protocol === 'file:') ? 'http://localhost:5000' : (location.origin);
+  var token = localStorage.getItem('ecomx_token');
+  if (!token) return;
+  try {
+    var r = await fetch(API_BASE + '/api/admin/stats', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!r.ok) return;
+    var s = await r.json();
+    // Update stat cards — find by text content of .stat-label siblings
+    document.querySelectorAll('.stat-card').forEach(function(card) {
+      var label = card.querySelector('.stat-label');
+      var val   = card.querySelector('.stat-value');
+      if (!label || !val) return;
+      var lbl = label.textContent.trim().toLowerCase();
+      if (lbl.includes('total users'))      val.textContent = s.users != null ? s.users.toLocaleString() : val.textContent;
+      else if (lbl.includes('active sellers')) val.textContent = s.sellers != null ? s.sellers.toLocaleString() : val.textContent;
+      else if (lbl.includes('platform revenue')) val.textContent = s.revenue != null ? '$' + (s.revenue >= 1000 ? (s.revenue/1000).toFixed(1) + 'K' : s.revenue.toFixed(2)) : val.textContent;
+      else if (lbl.includes('total orders')) val.textContent = s.orders != null ? s.orders.toLocaleString() : val.textContent;
+      else if (lbl.includes('total products')) val.textContent = s.products != null ? s.products.toLocaleString() : val.textContent;
+      else if (lbl.includes('customers'))    val.textContent = s.customers != null ? s.customers.toLocaleString() : val.textContent;
+    });
+    // Update user chart legend
+    if (s.users) {
+      var custPct   = s.customers ? Math.round(s.customers / s.users * 100) : 0;
+      var sellPct   = s.sellers   ? Math.round(s.sellers   / s.users * 100) : 0;
+      var adminPct  = 100 - custPct - sellPct;
+      var legendEls = document.querySelectorAll('.chart-card .d-flex.flex-column .d-flex.align-items-center');
+      if (legendEls[0]) legendEls[0].lastElementChild.textContent = 'Customers ' + custPct + '%';
+      if (legendEls[1]) legendEls[1].lastElementChild.textContent = 'Sellers '   + sellPct + '%';
+      if (legendEls[2]) legendEls[2].lastElementChild.textContent = 'Admins '    + adminPct + '%';
+    }
+    // Update page subtitle
+    var subtitle = document.querySelector('.page-subtitle');
+    if (subtitle) subtitle.textContent = 'Platform overview — ' + new Date().toLocaleDateString('en-US',{month:'long',year:'numeric'});
+  } catch(e) { console.warn('Dashboard stats fetch failed:', e); }
+
+  // Load recent orders into table
+  try {
+    var ro = await fetch(API_BASE + '/api/admin/orders', { headers: { 'Authorization': 'Bearer ' + token } });
+    if (!ro.ok) return;
+    var od = await ro.json();
+    var recentOrders = (od.orders || []).slice(0, 5);
+    if (!recentOrders.length) return;
+    var STATUS_BADGE = { processing:'badge-processing', shipped:'badge-shipped', delivered:'badge-delivered', pending:'badge-pending', cancelled:'badge-cancelled' };
+    var tbody = document.querySelector('.data-card table tbody');
+    if (!tbody) return;
+    tbody.innerHTML = recentOrders.map(function(o) {
+      var badge = STATUS_BADGE[o.status] || 'badge-pending';
+      var cust  = (o.customer_name || o.customer_email || 'Customer').split(' ')[0];
+      return '<tr>'
+        + '<td class="fw-600">' + (o.order_number || '#' + o.id) + '</td>'
+        + '<td>' + cust + '</td>'
+        + '<td>—</td>'
+        + '<td class="fw-600">$' + parseFloat(o.total || 0).toFixed(2) + '</td>'
+        + '<td><span class="status-badge ' + badge + '">' + (o.status || 'pending') + '</span></td>'
+        + '</tr>';
+    }).join('');
+  } catch(e) {}
+})();
+
+const rCtx = document.getElementById('revenueChart').getContext('2d');
+new Chart(rCtx, {
+  type: 'bar',
+  data: {
+    labels: ['Jan','Feb','Mar','Apr','May','Jun'],
+    datasets: [
+      { label: 'Revenue ($K)', data: [280,320,410,390,450,482], backgroundColor: 'rgba(79,70,229,.8)', borderRadius: 6, yAxisID: 'y' },
+      { label: 'Orders', data: [5200,6100,7800,7200,8100,8742], backgroundColor: 'rgba(245,158,11,.8)', borderRadius: 6, yAxisID: 'y1' }
+    ]
+  },
+  options: {
+    responsive: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { display: false }, ticks: { font: { family: 'Poppins', size: 11 } } },
+      y: { grid: { color: 'rgba(0,0,0,.04)' }, ticks: { font: { family: 'Poppins', size: 11 }, callback: v => '$' + (v/1000).toFixed(0) + 'K' } },
+      y1: { position: 'right', grid: { display: false }, ticks: { font: { family: 'Poppins', size: 11 } } }
+    }
+  }
+});
+const uCtx = document.getElementById('userChart').getContext('2d');
+new Chart(uCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Customers', 'Sellers', 'Admins'],
+    datasets: [{ data: [78, 18, 4], backgroundColor: ['#4f46e5', '#f59e0b', '#ef4444'], borderWidth: 0, hoverOffset: 8 }]
+  },
+  options: { responsive: true, plugins: { legend: { display: false } }, cutout: '70%' }
+});
+</script>
+</body>
+</html>
